@@ -1,13 +1,13 @@
-# IPC流用可能部 IPC Diversion Section
+# IPC流用可能部
 
-## 概要 Overview
+## 概要
 
-* ServerとClientの通信処理(IPC)部分を汎用的に実装したものです。A general implementation of the Server and Client inter-processing communication (IPC) part.
-* 大きく以下で構成されています。It consists largely of the following:
-  * IPCライブラリ実装ソースIPC library implementation source: src, include
-  * IPC単体テスト用プログラムIPC unit test program: ipc_unit_test
+* ServerとClientの通信処理(IPC)部分を汎用的に実装したものです。
+* 大きく以下で構成されています。
+  * IPCライブラリ実装ソース
+  * IPC単体テスト用プログラム
 
-# ビルド方法Build Method
+# ビルド方法
 
 * 以下の手順でビルド可能です。You can build it by following these steps:
   ```bash
