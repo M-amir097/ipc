@@ -16,26 +16,27 @@
   $ cmake ..
   $ make
   ```
-  * 上記のコマンドは以下のスクリプトでも実行可能です。  
+  * 上記のコマンドは以下のスクリプトでも実行可能です。 The above command can be executed with the following script. 
     ```bash
     $ ./buildtest.sh
     ```
 
 後述するインストールでは、ホストPC(/usr/local/)にインストールされる。インストール先を変更するためには、cmakeに渡すオプションを変更する。
+In the installation described later, it will be installed on the host PC (/ usr / local /). To change the installation destination, change the options passed to cmake.
 
 ```
-例
+例 Example 
 $ cmake -DCMAKE_INSTALL_PREFIX=./install ..
 ```
 
-# インストール方法
+# インストール方法 Install method
 
   ```bash
   $ cd build
   $ sudo make install
   ```
 
-成功すると、下記のログが出力される。
+成功すると、下記のログが出力される。If successful, the following log will be output. 
 
 ```
 [100%] Built target ipc
@@ -77,7 +78,7 @@ Install the project...
 
 * 本ライブラリにはServer用とClient用の機能が入っており、それぞれ使用方法の異なる部分があります。
 
-## Server/Client共通
+## Server/Client共通 Common
 
 * 使用者は以下のライブラリとリンクする必要があります。
   * `libipc.so`
@@ -99,7 +100,7 @@ Install the project...
     →/tmp以下にUnix Domain Socket通信用ファイルが生成されるようになる。
   ```
 
-## IC-Service向け
+## For IC-Service向け
 
 * 本ライブラリをIC-Service向けに使用する場合、以下の値・構造体を用います(ipc_protocol.h参照)。
   * 用途種別usageType：IPC_USAGE_TYPE_IC_SERVICE
