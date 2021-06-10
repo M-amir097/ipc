@@ -50,41 +50,42 @@ Install the project...
 -- Installing: /usr/local/include/ipc_protocol.h
 ```
 
-# ビルド生成物
+# ビルド生成物 Build Product 
 
-* ビルドにより、最終的には以下が生成されます。  
-  * \<installdir\>/include/ 以下
-    外部公開向けヘッダファイル  
+* ビルドにより、最終的には以下が生成されます。  By build, Eventually the following will be generated:
+  * \<installdir\>/include/ 以下 the following
+    外部公開向けヘッダファイル  header file for public disclosure
     ```bash
     ipc.h
     ipc_protocol.h
     ```
-  * \<installdir\>/lib/ 以下  
-    共有ライブラリファイル  
+  * \<installdir\>/lib/ 以下  the following
+    共有ライブラリファイル  Shared library file 
     ```bash
-    libipc.so   (シンボリックリンク)
-    libipc.so.1 (シンボリックリンク)
+    libipc.so   (シンボリックリンク Symbolic link ) 
+    libipc.so.1 (シンボリックリンク Symbolic link )
     libipc.so.1.0.0
     ```
-  * build/ipc_unit_test/ 以下  
-    テストプログラム実行ファイル  
+  * build/ipc_unit_test/ 以下  the following
+    テストプログラム実行ファイル  Test program executable file
     ```bash
     ipc_unit_test_client
     ipc_unit_test_server
     ```
 <br>
 
-# 使用方法
+# 使用方法 how to use
 
 * 本ライブラリにはServer用とClient用の機能が入っており、それぞれ使用方法の異なる部分があります。
+* This library contains functions for Server and Client, Each has different uses.
 
 ## Server/Client共通 Common
 
-* 使用者は以下のライブラリとリンクする必要があります。
+* 使用者は以下のライブラリとリンクする必要があります。The user needs to link with the following libraries.
   * `libipc.so`
-* 本ライブラリ使用者は以下をincludeします。
+* 本ライブラリ使用者は以下をincludeします。This library user do the following include
   * #include <ipc.h>
-    * 後述のipc_protocol.hはipc.h内からincludeされるため、記載不要です。
+    * 後述のipc_protocol.hはipc.h内からincludeされるため、記載不要です。ipc_protocol.h described within ipc.h (include <ipc.h>), it is not necessary to describe it.
 * 使用するヘッダファイルは以下の通りです。
   * ipc.h
     * 使用可能なAPI関数一覧が宣言されています。
