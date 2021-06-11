@@ -111,32 +111,32 @@ Install the project...
 * IC-Serviceの場合、Cluster APIライブラリ(libcluster_api.so)がIPC Clientとなっています。For IC-Service, the Cluster API library (libcluster_api.so) is the IPC Client. 
   * 後述のClient用 APIは、libcluster_api.so内から呼び出されます。The API for Client described below is called from within libcluster_api.so.
 
-## Server用 API
+## Server用 API API for Server
 
-* libipc.soを用いるServerは以下のAPIを使用できます。
+* libipc.soを用いるServerは以下のAPIを使用できます。Servers using libipc.so can use the following APIs:
   * ipcServerStart(IPC_USAGE_TYPE_E usageType);
-    * 指定した用途種別usageType用のIPC Serverを起動します。
+    * 指定した用途種別usageType用のIPC Serverを起動します。Start the IPC Server for the specified usageType.
   * ipcSendMessage(IPC_USAGE_TYPE_E usageType, const void* pData, signed int size);
-    * 指定した用途種別usageType用に、IPC Clientへのデータ送信を行います。
-    * 送信データのアドレスとサイズを引数pData, sizeで指定します。
-    * 送信データは、IPC Client側で用意しているData Poolに格納されます。
+    * 指定した用途種別usageType用に、IPC Clientへのデータ送信を行います。Sends data to the IPC Client for the specified usageType. 
+    * 送信データのアドレスとサイズを引数pData, sizeで指定します。Specify the address and size of the transmission data with the arguments pData and size. 
+    * 送信データは、IPC Client側で用意しているData Poolに格納されます。The transmitted data is stored in the Data Pool prepared on the IPC Client side.
   * ipcServerStop(IPC_USAGE_TYPE_E usageType);
-    * 指定した用途種別usageType用のIPC Serverを終了します。
+    * 指定した用途種別usageType用のIPC Serverを終了します。Terminates the IPC Server for the specified usageType.
 
-## Client用 API
+## Client用 API Client API
 
-* libipc.soを用いるClientは以下のAPIを使用できます。
+* libipc.soを用いるClientは以下のAPIを使用できます。Client using libipc.so can use the following APIs:
   * ipcClientStart(IPC_USAGE_TYPE_E usageType);
-    * 指定した用途種別usageType用のIPC Clientを起動します。
-    * 同じusageType用のIPC Serverと接続します。
+    * 指定した用途種別usageType用のIPC Clientを起動します。Start the IPC Client for the specified usageType.
+    * 同じusageType用のIPC Serverと接続します。Connect with an IPC Server for the same usageType.
   * ipcReadDataPool(IPC_USAGE_TYPE_E usageType, void* pData, signed int* pSize);
-    * 指定したusageType用のData Poolの全データを読み込みます。
-    * 読み込みデータ格納先のアドレスはpDataに、格納可能なサイズはpSizeに指定します。
-    * Data Poolの内容はpDataに出力され、実際に読み込めたサイズはpSizeに出力されます。
+    * 指定したusageType用のData Poolの全データを読み込みます。Reads all data in the Data Pool for the specified usageType.
+    * 読み込みデータ格納先のアドレスはpDataに、格納可能なサイズはpSizeに指定します。The address to store the read data is specified in pData, and the size that can be stored is specified in pSize.
+    * Data Poolの内容はpDataに出力され、実際に読み込めたサイズはpSizeに出力されます。The contents of the Data Pool are written to pData, and the actual size read is written to pSize.
   * ipcRegisterCallback(IPC_USAGE_TYPE_E usageType, IPC_CHANGE_NOTIFY_CB changeNotifyCb);
-    * IPC Serverからデータを受信した時、どのデータが何に変化したかの通知を受けるためのコールバック関数を、指定したusageType用に登録します。
+    * IPC Serverからデータを受信した時、どのデータが何に変化したかの通知を受けるためのコールバック関数を、指定したusageType用に登録します。When data is received from the IPC Server, a callback function for receiving notification of what data has changed to what is registered for the specified usageType. 
   * ipcClientStop(IPC_USAGE_TYPE_E usageType);
-    * 指定した用途種別usageType用のIPC Clientを終了します。
+    * 指定した用途種別usageType用のIPC Clientを終了します。Terminates the IPC Client for the specified usageType.
 
 # 単体テスト実行方法
 
