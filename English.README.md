@@ -148,7 +148,7 @@ Install the project...
   
   操作は手動ですが、以下、テストの一例です。 The operation is manual, but the following is an example of the test.
 
-  1. **Server, Clientの順に起動します。**  Start Server and thren start Client
+  1. **Server, Clientの順に起動します。**  Start Server and then start Client
       ```bash
       (Terminal 1)
       $ ./ipc_unit_test_server
@@ -186,16 +186,16 @@ Install the project...
       ```
       ★oTempUnitValの変化についてはIC-Serviceとしては監視対象でないのでコールバック無し。There is no callback for changes in TempUnitVal because it is not monitored as an IC-Service.
 
-  3. **Client側で受信できているか確認します。**
+  3. **Client側で受信できているか確認します。**  Check if it can be received on the Client side.
       ```bash
       (Terminal 2)
-      command (h=help, q=quit):r ←★r を入力
-      ★送信データ一覧が表示されるが、以下、送信されたデータが入っていること。
+      command (h=help, q=quit):r ←★r を入力 input r
+      ★送信データ一覧が表示されるが、以下、送信されたデータが入っていること。Transmitted data list is displayed, The following contain the transmitted data. 
         2: brake(4) = 1
        70: oTempUnitVal(4) = 50
       ```
 
-  4. **Client, Serverの順に終了します。**
+  4. **Client, Serverの順に終了します。** Exit Client and then exit Server.
       ```bash
       (Terminal 2)
       command (h=help, q=quit):q
@@ -209,13 +209,13 @@ Install the project...
       $
       ```
 
-# IPC用途種別の追加・変更方法
-
-* まずはIC-Service向けにのみ実装しましたが、別の用途向けのデータを容易に追加することが可能なように構成しています。
-* 各用途種別向けの情報は、以下のファイルにて管理しています。
-  * include/ipc_protocol.h (外部公開ヘッダ)
-  * src/ipc_usage_info_table.c (IPC内部向けソース)
-* 新規用途の情報追加、もしくは既存用途への情報変更は上記2つのファイルに対してのみ行うだけで良いようにしています。
+# IPC用途種別の追加・変更方法 How to add/change IPC usage type
+ 
+* まずはIC-Service向けにのみ実装しましたが、別の用途向けのデータを容易に追加することが可能なように構成しています。 First, it was implemented only for IC-Service, but we configured it so that we can easily add data for other usage.
+* 各用途種別向けの情報は、以下のファイルにて管理しています。Information for each usage type is managed in the following files.
+  * include/ipc_protocol.h (外部公開ヘッダ Externally Published Header)
+  * src/ipc_usage_info_table.c (IPC内部向けソース IPC Internal Sources)
+* 新規用途の情報追加、もしくは既存用途への情報変更は上記2つのファイルに対してのみ行うだけで良いようにしています。To add information for a new use or to change information for an existing use, only the above two files are required.
   * ipc内の他の.cファイルや.hファイルに対しては変更不要です。
   * ただし、その用途でIPCを用いるアプリやテストプログラムに対しては、ipc_protocol.hへの定義追加・変更に合わせた対応が別途必要になります。
 * 理想ではツール等でコードを自動生成できることが理想ですが、今回はそこまでの実装を考慮しておりません。
