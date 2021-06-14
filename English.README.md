@@ -270,10 +270,10 @@ index 976cc73..51264c6 100644
  };
 
 +//   for IPC_USAGE_TYPE_FOR_TEST
-+static IPC_CHECK_CHANGE_INFO_S g_ipcCheckChangeNewService[] = { // データ変化を監視・通知したい種別のみ記載
++static IPC_CHECK_CHANGE_INFO_S g_ipcCheckChangeNewService[] = { // データ変化を監視・通知したい種別のみ記載 Describe only the type  you want to monitor / notify of data changes
 +    DEFINE_OFFSET_SIZE(IPC_DATA_NEW_SERVICE_S, param1, IPC_KIND_NS_PARAM1),
 +    DEFINE_OFFSET_SIZE(IPC_DATA_NEW_SERVICE_S, param2, IPC_KIND_NS_PARAM2)
-+}; // この例では、param3, param4のデータ変化については監視・通知しない。
++}; // この例では、param3, param4のデータ変化については監視・通知しない。This example donot want to monitor/notify changed of param3, param4 data
 +
  // == usage info table ==
  //   index of [] is IPC_USAGE_TYPE_E
@@ -282,22 +282,22 @@ index 976cc73..51264c6 100644
      {sizeof(IPC_DATA_IC_SERVICE_S), "ipcIcService"},
 -    {sizeof(IPC_DATA_FOR_TEST_S), "ipcForTest"}
 +    {sizeof(IPC_DATA_FOR_TEST_S), "ipcForTest"},
-+    {sizeof(IPC_DATA_NEW_SERVICE_S), "ipcNewService"} // 新規用途用の送受信サイズ情報追加
++    {sizeof(IPC_DATA_NEW_SERVICE_S), "ipcNewService"} // 新規用途用の送受信サイズ情報追加 add information of new usage sending/receiving size   
  };
 
  IPC_CHECK_CHANGE_INFO_TABLE_S g_ipcCheckChangeInfoTbl[] = {
      DEFINE_CHANGE_INFO_TABLE(g_ipcCheckChangeIcService),
 -    DEFINE_CHANGE_INFO_TABLE(g_ipcCheckChangeForTest)
 +    DEFINE_CHANGE_INFO_TABLE(g_ipcCheckChangeForTest),
-+    DEFINE_CHANGE_INFO_TABLE(g_ipcCheckChangeNewService) // 新規用途用 データ変化監視テーブルを登録
++    DEFINE_CHANGE_INFO_TABLE(g_ipcCheckChangeNewService) // 新規用途用 データ変化監視テーブルを登録 Register monitor table of new usage changed data
  };
 
 ```
 
-### 例2：既存の用途種別のデータの一部を削除する場合
+### 例2：既存の用途種別のデータの一部を削除する場合 Example 2: When deleting part of the existing usage type data
 
-既存の用途IC-Serviceの送受信データから、メンバ変数brakeを削除する場合の差分例を示します。
-IPC内における、メンバ変数を削除した場合の影響範囲となります。
+既存の用途IC-Serviceの送受信データから、メンバ変数brakeを削除する場合の差分例を示します。An example of the difference when the member variable brake is deleted from the transmission / reception data of the existing usage IC-Service is shown below.
+IPC内における、メンバ変数を削除した場合の影響範囲となります。。Influence range of the deleting member variable within the IPC.
 
 ```patch
 diff --git a/include/ipc_protocol.h b/include/ipc_protocol.h
@@ -334,51 +334,54 @@ index 976cc73..40ac8df 100644
      DEFINE_OFFSET_SIZE(IPC_DATA_IC_SERVICE_S, door, IPC_KIND_ICS_DOOR),
 ```
 
-## 用途種別の新規追加に関する共通事項
+## 用途種別の新規追加に関する共通事項 Common matters regarding the addition of a new use type
 
-* いくつか列挙体・構造体の新規追加、および既存の列挙体・構造体内への追記を伴いますが、いずれも名称については特に制約はありません。
+* いくつか列挙体・構造体の新規追加、および既存の列挙体・構造体内への追記を伴いますが、いずれも名称については特に制約はありません。Some new enumerations / structures will be added, and some enumerations / structures will be added to existing enumerations / structures, but there are no particular restrictions on the names of any of them.
 
-## include/ipc_protocol.h へ追記する情報
+## include/ipc_protocol.h へ追記する情報 Information added to include/ipc_protocol.h
 * 1つの用途種別に対し、以下の3つの情報を追記します。
-  * 用途種別名の追記
-  * 新規用途向けの変化通知種別用列挙体の定義
-  * 新規用途向けの送受信データ構造体の定義
-* 用途種別名の追記
-  * サンプルコードの以下の部分のことになります。
+Add the following three information for one usage type.
+  * 用途種別名の追記 Addition of usage type name
+  * 新規用途向けの変化通知種別用列挙体の定義 Definition of enumeration for change notification type for new usage
+  * 新規用途向けの送受信データ構造体の定義 Definition of send/receive data structure for new usage
+* 用途種別名の追記 Addition of usage type name
+  * サンプルコードの以下の部分のことになります。Sample code of this part will be as follow:
     ```patch
      typedef enum {
          IPC_USAGE_TYPE_IC_SERVICE = 0,
          IPC_USAGE_TYPE_FOR_TEST,
-    +    IPC_USAGE_TYPE_NEW_SERVICE, // 用途種別追加
+    +    IPC_USAGE_TYPE_NEW_SERVICE, // 用途種別追加 Adding of usage type
          IPC_USAGE_TYPE_MAX
      } IPC_USAGE_TYPE_E;
     ```
-  * enum IPC_USAGE_TYPE_E 内に用途種別となるメンバを追加します。
-  * IPC_USAGE_TYPE_MAXの1つ手前に追加するようにしてください(既存の定義に影響を及ぼさないようにするため)。
+  * enum IPC_USAGE_TYPE_E 内に用途種別となるメンバを追加します。Add a member for the usage type in enum IPC_USAGE_TYPE_E.
+  * IPC_USAGE_TYPE_MAXの1つ手前に追加するようにしてください(既存の定義に影響を及ぼさないようにするため)。Make sure to add it just before IPC_USAGE_TYPE_MAX (to avoid affecting existing definitions)
   * ここで定義した値は、ipc.hで定義されているipcServerStart()などの引数usageTypeへの指定用に使用します。
-* 新規用途向けの変化通知種別用列挙体の定義
-  * サンプルコードの以下の部分のことになります。
+The value defined here is used to specify the argument usageType such as ipcServerStart() defined in ipc.h.
+* 新規用途向けの変化通知種別用列挙体の定義 Definition of enumeration for change notification type for new usage
+  * サンプルコードの以下の部分のことになります。Sample code of this part will be as follow:
     ```patch
-    +typedef enum { // データ変化を監視したい種別のみ用意
+    +typedef enum { // データ変化を監視したい種別のみ用意 
+Only the types for which you want to monitor data changes are available
     +    IPC_KIND_NS_PARAM1 = 0,
     +    IPC_KIND_NS_PARAM2
     +} IPC_KIND_NEW_SERVICE_E;
     ```
-  * データ変化通知の種別用列挙体を追加します。後述の送受信データ構造体と関連があります。
-  * この値は、ipcRegisterCallback()で登録されたコールバック関数の第3引数kindへの指定に使用します。
-  * 列挙体名、メンバ名について、特に名称の制約はありません。
-* 新規用途向けのデータ構造体の定義
-  * サンプルコードの以下の部分のことになります。
+  * データ変化通知の種別用列挙体を追加します。後述の送受信データ構造体と関連があります。Adds an enumeration for the type of data change notification. Related to the send and receive data structures described below.
+  * この値は、ipcRegisterCallback()で登録されたコールバック関数の第3引数kindへの指定に使用します。This value is used to specify the callback function registered by ipcRegisterCallback () in the third argument kind.
+  * 列挙体名、メンバ名について、特に名称の制約はありません。There are no specific naming restrictions for enumeration and member names
+* 新規用途向けのデータ構造体の定義 Definition of send/receive data structure for new usage
+  * サンプルコードの以下の部分のことになります。Sample code of this part will be as follow:
     ```patch
-    +typedef struct { // この用途で送受信する全データ
+    +typedef struct { // この用途で送受信する全データ all data send/receive by this usage
     +    int param1;
     +    int param2;
     +    int param3;
     +    int param4;
     +} IPC_DATA_NEW_SERVICE_S;
     ```
-  * 新規用途で送受信するデータ構造体を追加します。
-  * IPC ServerからIPC Clientへは、ここで定義した構造体のデータ全てを送信することになります。
+  * 新規用途で送受信するデータ構造体を追加します。 Add data structures to send/receive for the new use.
+  * IPC ServerからIPC Clientへは、ここで定義した構造体のデータ全てを送信することになります。The IPC Server will send all the data in the structure defined here to the IPC Client.
 
 ## src/ipc_usage_info_table.c に対する追記
 * 1つの用途種別に対し、以下の3つの情報を追記します。
