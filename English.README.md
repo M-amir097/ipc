@@ -138,16 +138,17 @@ Install the project...
   * ipcClientStop(IPC_USAGE_TYPE_E usageType);
     * 指定した用途種別usageType用のIPC Clientを終了します。Terminates the IPC Client for the specified usageType.
 
-# 単体テスト実行方法
+# 単体テスト実行方法 Unit test execution method
 
-* 制限  
-  * 2020/12/25現在、このテストプログラムは必ずIC-Service用としてServerとClientを接続します。  
-  * unix domain socket通信用ファイルは /tmp/ 以下に ipcIcService というファイル名で生成されます。
+* 制限  Limitations
+  * 2020/12/25現在、このテストプログラムは必ずIC-Service用としてServerとClientを接続します。Currently 2020/12/25, this test program always connects Server and Client for IC-Service.  
+  * unix domain socket通信用ファイルは /tmp/ 以下に ipcIcService というファイル名で生成されます。 The unix domain socket communication file is generated under/tmp/with the file name ipcIcService.
 
-* ipc_unit_test_server と ipc_unit_test_client 間でプロセス間通信を行いますので、それぞれを別々のターミナルで起動します。  
-  操作は手動ですが、以下、テストの一例です。
+* ipc_unit_test_server と ipc_unit_test_client 間でプロセス間通信を行いますので、それぞれを別々のターミナルで起動します。Since Interprocess communication takes place between ipc _ unit _ test _ server and ipc _ unit _ test _ client, so start each in a separate terminal.
+  
+  操作は手動ですが、以下、テストの一例です。 The operation is manual, but the following is an example of the test.
 
-  1. **Server, Clientの順に起動します。**  
+  1. **Server, Clientの順に起動します。**  Start Server and thren start Client
       ```bash
       (Terminal 1)
       $ ./ipc_unit_test_server
@@ -158,14 +159,14 @@ Install the project...
       $ ./ipc_unit_test_client
       command (h=help, q=quit):
       ```  
-      この時点でServerとClientはIC-Service用として接続済みです。  
-      (ipcServerStart()とipcClientStart()が実行されています)  
+      この時点でServerとClientはIC-Service用として接続済みです。  At this point, the Server and Client are already connected for IC-Service.
+      (ipcServerStart()とipcClientStart()が実行されています)  (ipcServerStart () and ipcClientStart () are running)
 
-  2. **Server側の送信データを適当に編集して送信してみます。**  
+  2. **Server側の送信データを適当に編集して送信してみます。**  I will edit the data sent by the server and send it.
       ```bash
       (Terminal 1)
-      command (h=help, q=quit):w ←★ w を入力
-      write command (h=help q=goto main menu):2 1 ←★2 1を入力
+      command (h=help, q=quit):w ←★ w を入力 input w 
+      write command (h=help q=goto main menu):2 1 ←★2 1を入力 input 2 1
       write command (h=help q=goto main menu):70 50 ←★70 50を入力
       write command (h=help q=goto main menu):l ←★l を入力
       ★送信データ一覧が表示されるが、以下、入力内容が反映されていること。
