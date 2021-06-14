@@ -167,24 +167,24 @@ Install the project...
       (Terminal 1)
       command (h=help, q=quit):w ←★ w を入力 input w 
       write command (h=help q=goto main menu):2 1 ←★2 1を入力 input 2 1
-      write command (h=help q=goto main menu):70 50 ←★70 50を入力
-      write command (h=help q=goto main menu):l ←★l を入力
-      ★送信データ一覧が表示されるが、以下、入力内容が反映されていること。
-        2: brake(4) = 1 ←★write command 2 1 の結果
-        70: oTempUnitVal(4) = 50 ←write command 70 50 の結果
-      write command (h=help q=goto main menu):q ←★q を入力
-      command (h=help, q=quit):s ←★s を入力(ipcSendMessage()の実行)
+      write command (h=help q=goto main menu):70 50 ←★70 50を入力 input 70 50
+      write command (h=help q=goto main menu):l ←★l を入力 input 1
+      ★送信データ一覧が表示されるが、以下、入力内容が反映されていること。Transmitted data list is displayed, but the input contents are reflected below. 
+        2: brake(4) = 1 ←★write command 2 1 の結果 result of write command 2 1
+        70: oTempUnitVal(4) = 50 ←write command 70 50 の結果 result of write command 70 50
+      write command (h=help q=goto main menu):q ←★q を入力 input q
+      command (h=help, q=quit):s ←★s を入力(ipcSendMessage()の実行) input s (Executing ipcSendMessage())
       ipcSendMessage return:0
       command (h=help, q=quit):
       ```
-      Client側にコールバック関数の反応が出ているはず。
+      Client側にコールバック関数の反応が出ているはず。There should be a callback function response on the Client side.
       ```bash
       (Terminal 2)
-      command (h=help, q=quit):Enter changeNotifyCb ←★コールバック
-      kind = 2, size = 4, data=1 ←★brakeの値が1に変わったことを通知
+      command (h=help, q=quit):Enter changeNotifyCb ←★コールバック callback
+      kind = 2, size = 4, data=1 ←★brakeの値が1に変わったことを通知 Notify that the brake value has changed to 1
       Leave changeNotifyCb
       ```
-      ★oTempUnitValの変化についてはIC-Serviceとしては監視対象でないのでコールバック無し。
+      ★oTempUnitValの変化についてはIC-Serviceとしては監視対象でないのでコールバック無し。There is no callback for changes in TempUnitVal because it is not monitored as an IC-Service.
 
   3. **Client側で受信できているか確認します。**
       ```bash
