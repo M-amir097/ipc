@@ -215,19 +215,20 @@ Install the project...
 * 各用途種別向けの情報は、以下のファイルにて管理しています。Information for each usage type is managed in the following files.
   * include/ipc_protocol.h (外部公開ヘッダ Externally Published Header)
   * src/ipc_usage_info_table.c (IPC内部向けソース IPC Internal Sources)
-* 新規用途の情報追加、もしくは既存用途への情報変更は上記2つのファイルに対してのみ行うだけで良いようにしています。To add information for a new use or to change information for an existing use, only the above two files are required.
-  * ipc内の他の.cファイルや.hファイルに対しては変更不要です。
-  * ただし、その用途でIPCを用いるアプリやテストプログラムに対しては、ipc_protocol.hへの定義追加・変更に合わせた対応が別途必要になります。
-* 理想ではツール等でコードを自動生成できることが理想ですが、今回はそこまでの実装を考慮しておりません。
+* 新規用途の情報追加、もしくは既存用途への情報変更は上記2つのファイルに対してのみ行うだけで良いようにしています。It is only necessary to add information for new usage or change information for existing uses for the above two files.
+  * ipc内の他の.cファイルや.hファイルに対しては変更不要です。 No changes are required for other .c or .h files in ipc.
+  * ただし、その用途でIPCを用いるアプリやテストプログラムに対しては、ipc_protocol.hへの定義追加・変更に合わせた対応が別途必要になります。However, for apps and test programs that use IPC for that purpose, it is need to take additional measures according to the addition / change of the definition in ipc_protocol.h.
+* 理想ではツール等でコードを自動生成できることが理想ですが、今回はそこまでの実装を考慮しておりません。Ideally, code can be generated automatically using tools, etc., but this time we don't consider implementating it.
 
-## 用途種別の追加・変更に関するサンプルコード（差分）
+## 用途種別の追加・変更に関するサンプルコード（差分） Sample code for adding / changing the usage type (Sample code difference)
 
 まずは2つのファイルに対してどのように追加・変更する際のサンプルコードを示します。
+First, the sample code for how to add / modify two files as follow.
 
-### 例1：新規の用途種別を追加する場合
+### 例1：新規の用途種別を追加する場合 Example 1: When adding a new usage type
 
-仮にNEW_SERVICEという用途種別を追加する場合の差分例を示します。
-IPC内における、新規の用途種別追加による影響範囲となります。
+仮にNEW_SERVICEという用途種別を追加する場合の差分例を示します。The following shows an example of the difference when adding usage type NEW_SERVICE.
+IPC内における、新規の用途種別追加による影響範囲となります。Influence range of the addition of a new usage types within the IPC.
 
 ```patch
 diff --git a/include/ipc_protocol.h b/include/ipc_protocol.h
@@ -238,7 +239,7 @@ index c0ad861..2bc1115 100644
  typedef enum {
      IPC_USAGE_TYPE_IC_SERVICE = 0,
      IPC_USAGE_TYPE_FOR_TEST,
-+    IPC_USAGE_TYPE_NEW_SERVICE, // 用途種別追加
++    IPC_USAGE_TYPE_NEW_SERVICE, // 用途種別追加 Addition of usage type
      IPC_USAGE_TYPE_MAX
  } IPC_USAGE_TYPE_E;
 
@@ -247,12 +248,12 @@ index c0ad861..2bc1115 100644
  } IPC_DATA_FOR_TEST_S;
 
 +// for IPC_USAGE_TYPE_NEW_SERVICE
-+typedef enum { // データ変化を監視・通知したい種別のみ用意
++typedef enum { // データ変化を監視・通知したい種別のみ用意 Only the types for which you want to monitor/notify data changes are available
 +    IPC_KIND_NS_PARAM1 = 0,
 +    IPC_KIND_NS_PARAM2
 +} IPC_KIND_NEW_SERVICE_E;
 +
-+typedef struct { // この用途で送受信する全データ
++typedef struct { // この用途で送受信する全データ All data sent and received for this usage
 +    int param1;
 +    int param2;
 +    int param3;
