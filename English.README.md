@@ -449,11 +449,11 @@ Only the types for which you want to monitor data changes are available
   * ipc部分、およびipcをその用途で用いるアプリをそれぞれビルドしてみて、コンパイルエラーとなった部分を修正します。Try building the ipc part and the application that uses ipc for that purpose, and fix the part that caused the compilation error. 
 
 * ipc_protocol.h内の既存の送信データ構想体へメンバ変数を追加する場合 When adding a member variable to an existing send data concept in ipc_protocol.h
-  * [IPC用途種別の追加・変更方法](#IPC用途種別の追加・変更方法) を参考に、include/ipc_protocol.hとsrc/ipc_usage_info_table.cへの追記を行います。
+  * [IPC用途種別の追加・変更方法](#IPC用途種別の追加・変更方法) を参考に、include/ipc_protocol.hとsrc/ipc_usage_info_table.cへの追記を行います。Refer to [How to add/change IPC usage types] (# How to add/change IPC usage types), add  to include/ipc_protocol.h and src/ipc_usage_info_table.c.
 
-## 補足
-* src/ipc_usage_info_table.cにて、DEFINE_OFFSET_SIZE()マクロにて情報を記載しているが、これはoffsetof()とsizeof()を使うことで、メンバ変数に関する構造体先頭からオフセットとサイズを取得しています。
-  * 用途種別の追加を容易に行えるようにするため、IPC処理内部ではデータ構造体内の変数名を直接指定しないような実装を行っています。
-  * 各用途に対して、データ構造体のオフセットテーブルを用意することで、送信されたデータの何バイト目に何の変数があるかがわかるようになります。
-    * この仕組みにより、IPC処理内部でメンバ変数名を直接指定しなくとも、データ変化の確認が可能となります。
-  * [IPC用途種別の追加・変更方法](#IPC用途種別の追加・変更方法) に従って用途種別を追加することで、IPC内部処理は新たな用途に対する処理ができるようになります。
+## 補足 supplement
+* src/ipc_usage_info_table.cにて、DEFINE_OFFSET_SIZE()マクロにて情報を記載しているが、これはoffsetof()とsizeof()を使うことで、メンバ変数に関する構造体先頭からオフセットとサイズを取得しています。In src / ipc_usage_info_table.c, the information is described by the DEFINE_OFFSET_SIZE () macro, which uses offsetof () and sizeof () to get the offset and size of member variables from the beginning of the structure.
+  * 用途種別の追加を容易に行えるようにするため、IPC処理内部ではデータ構造体内の変数名を直接指定しないような実装を行っています。In order to make it easier to add usage types, the IPC process does not directly specify variable names in data structures.
+  * 各用途に対して、データ構造体のオフセットテーブルを用意することで、送信されたデータの何バイト目に何の変数があるかがわかるようになります。For each usage, by preparing an offset table of the data structure, it becomes possible to know what variables are at which byte of the send data.
+    * この仕組みにより、IPC処理内部でメンバ変数名を直接指定しなくとも、データ変化の確認が可能となります。By this mechanism, it is possible to check data changes without directly specifying the member variable name inside the IPC process.
+  * [IPC用途種別の追加・変更方法](#IPC用途種別の追加・変更方法) に従って用途種別を追加することで、IPC内部処理は新たな用途に対する処理ができるようになります。By adding the usage type according to [How to add / change the IPC usage type] (#How to add / change the IPC usage type), the IPC internal processing can be process the new usage.
