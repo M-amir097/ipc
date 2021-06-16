@@ -383,13 +383,13 @@ Only the types for which you want to monitor data changes are available
   * 新規用途で送受信するデータ構造体を追加します。 Add data structures to send/receive for the new use.
   * IPC ServerからIPC Clientへは、ここで定義した構造体のデータ全てを送信することになります。The IPC Server will send all the data in the structure defined here to the IPC Client.
 
-## src/ipc_usage_info_table.c に対する追記
-* 1つの用途種別に対し、以下の3つの情報を追記します。
-  * データ変化通知用の種別対応テーブルの追加
-  * 通信用ドメイン情報追記(通信サイズ、ドメインファイル名)
-  * 用途と変化種別対応テーブルとの関係追記
-* データ変化通知用の種別対応テーブルの追加
-  * サンプルコードの以下の部分のことになります。
+## Regarding adding src/ipc_usage_info_table.c
+* 1つの用途種別に対し、以下の3つの情報を追記します。Add the following 3 information for one usage type
+  * データ変化通知用の種別対応テーブルの追加 Adding a type correspondence table for data change notification
+  * 通信用ドメイン情報追記(通信サイズ、ドメインファイル名) Adding communication domain information (Communication size and domain file name)
+  * 用途と変化種別対応テーブルとの関係追記 Adding the relationship between usage and change type correspondence table 
+* データ変化通知用の種別対応テーブルの追加 Adding a type correspondence table for data change notification
+  * サンプルコードの以下の部分のことになります。Sample code of this part will be as follow:
     ```
     +//   for IPC_USAGE_TYPE_FOR_TEST
     +static IPC_CHECK_CHANGE_INFO_S g_ipcCheckChangeNewService[] = { // データ変化を監視・通知したい種別のみ記載
