@@ -437,18 +437,18 @@ Only the types for which you want to monitor data changes are available
     +    DEFINE_CHANGE_INFO_TABLE(g_ipcCheckChangeNewService) // 新規用途用 データ変化監視テーブルを登録Registering a data change monitoring table for new usage
      };
     ```
-  * 構造体配列 g_ipcCheckChangeInfoTbl[] に、新規用途向けの変化通知種別対応テーブルに関する情報を追記します。
-  * ipc_protocol.hのenum IPC_USAGE_TYPE_Eの定義順と一致させる必要があるので、必ず末尾に追加してください。
-  * 前述の「変化通知種別対応テーブル構造体」を、以下のようなマクロに記載し、g_ipcCheckChangeInfoTbl[]の末尾に追記します。
+  * 構造体配列 g_ipcCheckChangeInfoTbl[] に、新規用途向けの変化通知種別対応テーブルに関する情報を追記します。In the structure array g_ipcCheckChangeInfoTbl[], Adding information about the change notification type mapping table for new usage. 
+  * ipc_protocol.hのenum IPC_USAGE_TYPE_Eの定義順と一致させる必要があるので、必ず末尾に追加してください。it is necessary to match the definition order of enum IPC_USAGE_TYPE_E in ipc_protocol.h,so be sure to add it at the end. 
+  * 前述の「変化通知種別対応テーブル構造体」を、以下のようなマクロに記載し、g_ipcCheckChangeInfoTbl[]の末尾に追記します。Describe the above-mentioned "change notification type mapping table structure" in the following macro and add it to the end of g_ipcCheckChangeInfoTbl[].
     ```c
-    DEFINE_CHANGE_INFO_TABLE(<変化通知種別対応テーブル構造体名>),
+    DEFINE_CHANGE_INFO_TABLE(<変化通知種別対応テーブル構造体名>),DEFINE_CHANGE_INFO_TABLE (<name of change notification type mapping table structure>), 
     ```
 
-## 既存用途向けの送信データを一部変更する場合
-* ipc_protocol.h内の既存の送信データ構造体内のメンバ変数の削除、もしくは名称変更する場合
-  * ipc部分、およびipcをその用途で用いるアプリをそれぞれビルドしてみて、コンパイルエラーとなった部分を修正します。
+## 既存用途向けの送信データを一部変更する場合 When partially changing the send data for existing usage
+* ipc_protocol.h内の既存の送信データ構造体内のメンバ変数の削除、もしくは名称変更する場合 When deleting or renaming a member variable in an existing send data structure in ipc_protocol.h
+  * ipc部分、およびipcをその用途で用いるアプリをそれぞれビルドしてみて、コンパイルエラーとなった部分を修正します。Try building the ipc part and the application that uses ipc for that purpose, and fix the part that caused the compilation error. 
 
-* ipc_protocol.h内の既存の送信データ構想体へメンバ変数を追加する場合
+* ipc_protocol.h内の既存の送信データ構想体へメンバ変数を追加する場合 When adding a member variable to an existing send data concept in ipc_protocol.h
   * [IPC用途種別の追加・変更方法](#IPC用途種別の追加・変更方法) を参考に、include/ipc_protocol.hとsrc/ipc_usage_info_table.cへの追記を行います。
 
 ## 補足
