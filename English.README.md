@@ -392,24 +392,24 @@ Only the types for which you want to monitor data changes are available
   * サンプルコードの以下の部分のことになります。Sample code of this part will be as follow:
     ```
     +//   for IPC_USAGE_TYPE_FOR_TEST
-    +static IPC_CHECK_CHANGE_INFO_S g_ipcCheckChangeNewService[] = { // データ変化を監視・通知したい種別のみ記載
+    +static IPC_CHECK_CHANGE_INFO_S g_ipcCheckChangeNewService[] = { // データ変化を監視・通知したい種別のみ記載 Describe only the type  you want to monitor / notify of data changes
     +    DEFINE_OFFSET_SIZE(IPC_DATA_NEW_SERVICE_S, param1, IPC_KIND_NS_PARAM1),
     +    DEFINE_OFFSET_SIZE(IPC_DATA_NEW_SERVICE_S, param2, IPC_KIND_NS_PARAM2)
-    +}; // この例では、param3, param4のデータ変化については監視・通知しない。
+    +}; // この例では、param3, param4のデータ変化については監視・通知しない。 In this example, data changes in param3 and param4 are not monitored or notified.
     ```
-  * 新規用途向けに、IPC_CHECK_CHANGE_INFO_Sの構造体配列を追加します。
-  * ipc_protocol.hで定義した変化通知種別用列挙体の定義と、通信するデータ構造体メンバを対応付けるテーブルを記載します。
-  * このテーブルは、IPC ClientがIPC Serverからデータを受信する時に、前回受信時と変化しているデータ種別をコールバック通知する際に使用します。
-  * 構造体配列内には、以下のようなマクロを複数個記載して対応を定義します。
+  * 新規用途向けに、IPC_CHECK_CHANGE_INFO_Sの構造体配列を追加します。For new usage, add a structure array of IPC_CHECK_CHANGE_INFO_S.
+  * ipc_protocol.hで定義した変化通知種別用列挙体の定義と、通信するデータ構造体メンバを対応付けるテーブルを記載します。Describes a table that associates the definition of the change notification type enumeration defined in ipc _ protocol.h with the data structure members to be communicated.
+  * このテーブルは、IPC ClientがIPC Serverからデータを受信する時に、前回受信時と変化しているデータ種別をコールバック通知する際に使用します。This table is used when the IPC Client receives data from the IPC Server and gives a callback notification of the data type changed from the previous receiving.
+  * 構造体配列内には、以下のようなマクロを複数個記載して対応を定義します。 Within the structure array, describe multiple macros as shown below to define the correspondence.
     ```c
-    DEFINE_OFFSET_SIZE(<データ構造体名>, <構造体メンバ名>, 変化通知列挙体メンバ名),
+    DEFINE_OFFSET_SIZE(<データ構造体名>, <構造体メンバ名>, 変化通知列挙体メンバ名),(<Data structure name>, <Structure member name>, Change notification enumeration member name),
     ```
-  * 上記サンプルコード、g_ipcCheckChangeNewService[]の場合は以下のようになります。
-    * param1が前回受信時と値が異なる場合、変化種別 IPC_KIND_NS_PARAM1 としてIPC Clientへコールバック通知する。
-    * param2が前回受信時と値が異なる場合、変化種別 IPC_KIND_NS_PARAM2 としてIPC Clientへコールバック通知する。
-    * 記載していないparam3, param4については、前回受信時と値が異なっていてもコールバック通知はしない。
+  * 上記サンプルコード、g_ipcCheckChangeNewService[]の場合は以下のようになります。In the case of the above sample code, g_ipcCheckChangeNewService[] will be as follows. 
+    * param1が前回受信時と値が異なる場合、変化種別 IPC_KIND_NS_PARAM1 としてIPC Clientへコールバック通知する。If the value of param1 is different from the value at the time of the previous reception, the callback is notified to the IPC Client as the change type IPC_KIND_NS_PARAM1.
+    * param2が前回受信時と値が異なる場合、変化種別 IPC_KIND_NS_PARAM2 としてIPC Clientへコールバック通知する。* If the value of param2 is different from the value at the time of the previous reception, the callback is notified to the IPC Client as the change type IPC_KIND_NS_PARAM2.
+    * 記載していないparam3, param4については、前回受信時と値が異なっていてもコールバック通知はしない。For param3 and param4 which are not described,callback do not notify  even if the value is different from the previous receiving
 
-* 通信用ドメイン情報追記(通信サイズ、ドメインファイル名)
+* 通信用ドメイン情報追記(通信サイズ、ドメインファイル名) Adding communication domain information (Communication size and domain file name)
   * サンプルコードの以下の部分のことになります。
     ```patch
      IPC_DOMAIN_INFO_S g_ipcDomainInfoList[] =
