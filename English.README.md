@@ -2,7 +2,7 @@
 
 ## 概要 Overview
 
-* ServerとClientの通信処理(IPC)部分を汎用的に実装したものです。A general implementation of the Server and Client inter-processing communication (IPC) part.
+* ServerとClientの通信処理(IPC)部分を汎用的に実装したものです。A general implementation of the Server and Client Inter-processing communication (IPC) part.
 * 大きく以下で構成されています。It consists largely of the following:
   * IPCライブラリ実装ソースIPC library implementation source: src, include
   * IPC単体テスト用プログラムIPC unit test program: ipc_unit_test
