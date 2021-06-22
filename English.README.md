@@ -1,42 +1,42 @@
-# IPC流用可能部 IPC Diversion Section
+# IPC Diversion Section
 
-## 概要 Overview
+## Overview
 
-* ServerとClientの通信処理(IPC)部分を汎用的に実装したものです。A general implementation of the Server and Client Inter-processing communication (IPC) part.
-* 大きく以下で構成されています。It consists largely of the following:
-  * IPCライブラリ実装ソースIPC library implementation source: src, include
-  * IPC単体テスト用プログラムIPC unit test program: ipc_unit_test
+* A general implementation of the Server and Client Inter-processing communication (IPC) part.
+* It consists mainly of the following:
+  * IPC library implementation source: src, include
+  * IPC unit test program: ipc_unit_test
 
-# ビルド方法Build Method
+# Building Method
 
-* 以下の手順でビルド可能です。You can build it by following these steps:
+* Building by following steps:
   ```bash
   $ mkdir build
   $ cd build
   $ cmake ..
   $ make
   ```
-  * 上記のコマンドは以下のスクリプトでも実行可能です。 The above command can be executed with the following script. 
+  * The above commands can be executed with the following script:
     ```bash
     $ ./buildtest.sh
     ```
 
-後述するインストールでは、ホストPC(/usr/local/)にインストールされる。インストール先を変更するためには、cmakeに渡すオプションを変更する。
-In the installation described later, it will be installed on the host PC (/ usr / local /). To change the installation destination, change the options passed to cmake.
+For the installation described next, which will be installed on the host PC (/ usr / local /). 
+Change the options passed to _cmake_ to change the installation destination.
 
 ```
 例 Example 
 $ cmake -DCMAKE_INSTALL_PREFIX=./install ..
 ```
 
-# インストール方法 Install method
+# Installing Method
 
   ```bash
   $ cd build
   $ sudo make install
   ```
 
-成功すると、下記のログが出力される。If successful, the following log will be output. 
+When succeeded, the following log will be output. 
 
 ```
 [100%] Built target ipc
@@ -50,31 +50,28 @@ Install the project...
 -- Installing: /usr/local/include/ipc_protocol.h
 ```
 
-# ビルド生成物 Build Product 
+# Building Product 
 
-* ビルドにより、最終的には以下が生成されます。  By build, Eventually the following will be generated:
-  * \<installdir\>/include/ 以下 the following
-    外部公開向けヘッダファイル  header file for public disclosure
+* Building will generate the following at last:
+  * \<installdir\>/include/ (External Public header files)
     ```bash
     ipc.h
     ipc_protocol.h
     ```
-  * \<installdir\>/lib/ 以下  the following
-    共有ライブラリファイル  Shared library file 
+  * \<installdir\>/lib/ (Shared library files) 
     ```bash
-    libipc.so   (シンボリックリンク Symbolic link ) 
-    libipc.so.1 (シンボリックリンク Symbolic link )
+    libipc.so   ( Symbolic link ) 
+    libipc.so.1 ( Symbolic link )
     libipc.so.1.0.0
     ```
-  * build/ipc_unit_test/ 以下  the following
-    テストプログラム実行ファイル  Test program executable file
+  * build/ipc_unit_test/ (Test program executable file)
     ```bash
     ipc_unit_test_client
     ipc_unit_test_server
     ```
 <br>
 
-# 使用方法 how to use
+# 使用方法 how to use/Using mehod
 
 * 本ライブラリにはServer用とClient用の機能が入っており、それぞれ使用方法の異なる部分があります。
 * This library contains functions for Server and Client, Each has different uses.
