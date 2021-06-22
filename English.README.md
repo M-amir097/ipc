@@ -206,16 +206,16 @@ Install the project...
       $
       ```
 
-# IPC用途種別の追加・変更方法 How to add/change IPC usage type
+# Adding/changeing IPC usage type method
  
-* まずはIC-Service向けにのみ実装しましたが、別の用途向けのデータを容易に追加することが可能なように構成しています。 First, it was implemented only for IC-Service, but we configured it so that we can easily add data for other usage.
-* 各用途種別向けの情報は、以下のファイルにて管理しています。Information for each usage type is managed in the following files.
-  * include/ipc_protocol.h (外部公開ヘッダ Externally Published Header)
-  * src/ipc_usage_info_table.c (IPC内部向けソース IPC Internal Sources)
-* 新規用途の情報追加、もしくは既存用途への情報変更は上記2つのファイルに対してのみ行うだけで良いようにしています。It is only necessary to add information for new usage or change information for existing uses for the above two files.
-  * ipc内の他の.cファイルや.hファイルに対しては変更不要です。 No changes are required for other .c or .h files in ipc.
-  * ただし、その用途でIPCを用いるアプリやテストプログラムに対しては、ipc_protocol.hへの定義追加・変更に合わせた対応が別途必要になります。However, for apps and test programs that use IPC for that purpose, it is need to take additional measures according to the addition / change of the definition in ipc_protocol.h.
-* 理想ではツール等でコードを自動生成できることが理想ですが、今回はそこまでの実装を考慮しておりません。Ideally, code can be generated automatically using tools, etc., but this time we don't consider implementating it.
+* First, implementetion only for IC-Service, but configured to add data for other usage easily.
+* Information for each usage type is managed in the following files:
+  * include/ipc_protocol.h (External Public header)
+  * src/ipc_usage_info_table.c (IPC Internal Source)
+* Adding information for new usage or changing information for existed useage only by two files above.
+  * No changes are required for other than .c or .h files in ipc.
+  * However, Regarding application and test program used IPC, It is necessary to take measures according to the adding/changing of the ipc_protocol.h definition.
+* Ideally, code can be generated automatically using tools and else, but this time we don't consider that implementation.
 
 ## 用途種別の追加・変更に関するサンプルコード（差分） Sample code for adding / changing the usage type (Sample code difference)
 
