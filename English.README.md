@@ -21,8 +21,7 @@
     $ ./buildtest.sh
     ```
 
-For the installation described next, which will be installed on the host PC (/ usr / local /). 
-Change the options passed to _cmake_ to change the installation destination.
+For the installation described next, which will be installed on the host PC (/usr/local/). Change the options passed to _cmake_ to change the installation destination.
 
 ```
 Example 
@@ -53,18 +52,21 @@ Install the project...
 # Building Product 
 
 * At last Building will generate the following:
-  * \<installdir\>/include/ (External Public header files)
+  * \<installdir\>/include/
+(External Public header files)
     ```bash
     ipc.h
     ipc_protocol.h
     ```
-  * \<installdir\>/lib/ (Shared library files) 
+  * \<installdir\>/lib/
+(Shared library files) 
     ```bash
     libipc.so   ( Symbolic link ) 
     libipc.so.1 ( Symbolic link )
     libipc.so.1.0.0
     ```
-  * build/ipc_unit_test/ (Test program executable file)
+  * build/ipc_unit_test/
+(Test program executable file)
     ```bash
     ipc_unit_test_client
     ipc_unit_test_server
@@ -141,10 +143,9 @@ Install the project...
   * The unix domain socket communication files are generated under /tmp/ with the file name ipcIcService.
 
 * Since Inter processing communication takes place between ipc_unit_test_server and ipc_unit_test_client, so start each one in a separate terminal.
-  
-  Testing example as follow (Manually operated): 
+  Testing example as bellow (Manually operated): 
 
-  1. **Starting Server and then starting Client
+  1. **Starting Server and then starting Client**
       ```bash
       (Terminal 1)
       $ ./ipc_unit_test_server
@@ -158,40 +159,40 @@ Install the project...
       At this point, the Server and Client connection for IC-Service completed.
       (Executing ipcServerStart () and ipcClientStart ())
 
-  2. **Edit sending data of the server, then send it.
+  2. **Editing Server sending data, then send it**
       ```bash
       (Terminal 1)
-      command (h=help, q=quit):w ←★ input w 
-      write command (h=help q=goto main menu):2 1 ←★ input 2 1
-      write command (h=help q=goto main menu):70 50 ←★ input 70 50
-      write command (h=help q=goto main menu):l ←★ input 1
-      ★送信データ一覧が表示されるが、以下、入力内容が反映されていること。Sending data list is displayed, but the input contents are reflected below. 
-        2: brake(4) = 1 ←★ write command 2 1 result
-        70: oTempUnitVal(4) = 50 ←write command 70 50 result
-      write command (h=help q=goto main menu):q ←★q を入力 input q
-      command (h=help, q=quit):s ←★s を入力(ipcSendMessage()の実行) input s (Executing ipcSendMessage())
+      command (h=help, q=quit):w ←★input w 
+      write command (h=help q=goto main menu):2 1 ←★input 2 1
+      write command (h=help q=goto main menu):70 50 ←★input 70 50
+      write command (h=help q=goto main menu):l ←★input 1
+      ★Sending data list is displayed, the influnce of input contents as below. 
+        2: brake(4) = 1 ←★write command 2 1 result
+        70: oTempUnitVal(4) = 50 ←★write command 70 50 result
+      write command (h=help q=goto main menu):q ←★input q
+      command (h=help, q=quit):s ←★input s (Executing ipcSendMessage())
       ipcSendMessage return:0
       command (h=help, q=quit):
       ```
-      Client側にコールバック関数の反応が出ているはず。There should be a callback function response on the Client side.
+      In Client side, The callback function should be responding.
       ```bash
       (Terminal 2)
-      command (h=help, q=quit):Enter changeNotifyCb ←★コールバック callback
-      kind = 2, size = 4, data=1 ←★brakeの値が1に変わったことを通知 Notify that the brake value has changed to 1
+      command (h=help, q=quit):Enter changeNotifyCb ←★callback
+      kind = 2, size = 4, data=1 ←★Notification of brake value changed to 1 
       Leave changeNotifyCb
       ```
-      ★oTempUnitValの変化についてはIC-Serviceとしては監視対象でないのでコールバック無し。There is no callback for changes in TempUnitVal because it is not monitored as an IC-Service.
+      ★oTempUnitValの変化についてはIC-Serviceとしては監視対象でないのでコールバック無し。No callback for TempUnitVal change as an IC-Service, because it is not monitored .
 
-  3. **Client側で受信できているか確認します。**  Check if it can be received on the Client side.
+  3. **Check Client side receiving.**  
       ```bash
       (Terminal 2)
-      command (h=help, q=quit):r ←★r を入力 input r
-      ★送信データ一覧が表示されるが、以下、送信されたデータが入っていること。Transmitted data list is displayed, The following contain the transmitted data. 
+      command (h=help, q=quit):r ←★input r
+      ★Sending data list is displayed, Sending data contained as bellow. 
         2: brake(4) = 1
        70: oTempUnitVal(4) = 50
       ```
 
-  4. **Client, Serverの順に終了します。** Exit Client and then exit Server.
+  4. **Exit Client then Server.** 
       ```bash
       (Terminal 2)
       command (h=help, q=quit):q
