@@ -349,55 +349,53 @@ index 976cc73..40ac8df 100644
          IPC_USAGE_TYPE_MAX
      } IPC_USAGE_TYPE_E;
     ```
-  * enum IPC_USAGE_TYPE_E 内に用途種別となるメンバを追加します。Add a member for the usage type in enum IPC_USAGE_TYPE_E.
-  * IPC_USAGE_TYPE_MAXの1つ手前に追加するようにしてください(既存の定義に影響を及ぼさないようにするため)。Make sure to add it just before IPC_USAGE_TYPE_MAX (to avoid affecting existing definitions)
-  * ここで定義した値は、ipc.hで定義されているipcServerStart()などの引数usageTypeへの指定用に使用します。
-The value defined here is used to specify the argument usageType such as ipcServerStart() defined in ipc.h.
-* 新規用途向けの変化通知種別用列挙体の定義 Definition of enumeration for change notification type for new usage
-  * サンプルコードの以下の部分のことになります。Sample code of this part will be as follow:
+  * Adding a member for the usage type in enum IPC_USAGE_TYPE_E.
+  * Make sure to add it just before IPC_USAGE_TYPE_MAX (Avoiding effect existing definitions)
+  * The value defined here is used to specify the argument usageType such as ipcServerStart() defined in ipc.h.
+* For new usage, Defining enumeration for change notification type
+  * Sample code of this part will be as follow:
     ```patch
-    +typedef enum { // データ変化を監視したい種別のみ用意 
-Only the types for which you want to monitor data changes are available
+    +typedef enum { // Preparing only the type which we want to monitor data change
     +    IPC_KIND_NS_PARAM1 = 0,
     +    IPC_KIND_NS_PARAM2
     +} IPC_KIND_NEW_SERVICE_E;
     ```
-  * データ変化通知の種別用列挙体を追加します。後述の送受信データ構造体と関連があります。Adds an enumeration for the type of data change notification. Related to the send and receive data structures described below.
-  * この値は、ipcRegisterCallback()で登録されたコールバック関数の第3引数kindへの指定に使用します。This value is used to specify the callback function registered by ipcRegisterCallback () in the third argument kind.
-  * 列挙体名、メンバ名について、特に名称の制約はありません。There are no specific naming restrictions for enumeration and member names
-* 新規用途向けのデータ構造体の定義 Definition of send/receive data structure for new usage
-  * サンプルコードの以下の部分のことになります。Sample code of this part will be as follow:
+  * Adding an enumeration for the data change notification type. Related to the sending/receiving data structures will describe next.
+  * This value is used to specify the third argument kind of callback function registered by ipcRegisterCallback ().
+  * There are no restrictions for naming enumeration and member.
+* For new usage, Defining sending/receiving data structure 
+  * Sample code of this part will be as follow:
     ```patch
-    +typedef struct { // この用途で送受信する全データ all data send/receive by this usage
+    +typedef struct { // This part for sending and receiving all data
     +    int param1;
     +    int param2;
     +    int param3;
     +    int param4;
     +} IPC_DATA_NEW_SERVICE_S;
     ```
-  * 新規用途で送受信するデータ構造体を追加します。 Add data structures to send/receive for the new use.
-  * IPC ServerからIPC Clientへは、ここで定義した構造体のデータ全てを送信することになります。The IPC Server will send all the data in the structure defined here to the IPC Client.
+  * For new usage, adding send/receive data structures.
+  * The IPC Server will send all the data in the defined structure to the IPC Client.
 
 ## Regarding adding src/ipc_usage_info_table.c
-* 1つの用途種別に対し、以下の3つの情報を追記します。Add the following 3 information for one usage type
-  * データ変化通知用の種別対応テーブルの追加 Adding a type correspondence table for data change notification
-  * 通信用ドメイン情報追記(通信サイズ、ドメインファイル名) Adding communication domain information (Communication size and domain file name)
-  * 用途と変化種別対応テーブルとの関係追記 Adding the relationship between usage and change type correspondence table 
-* データ変化通知用の種別対応テーブルの追加 Adding a type correspondence table for data change notification
-  * サンプルコードの以下の部分のことになります。Sample code of this part will be as follow:
+* For one usage type, adding the following three information.
+  * Adding a type matching table for data change notification
+  * Adding communication domain information (Communication size and file name)
+  * Adding relationship between usage and change type matching table 
+* Adding a type matching table for data change notification
+  * Sample code of this part will be as follow:
     ```
     +//   for IPC_USAGE_TYPE_FOR_TEST
-    +static IPC_CHECK_CHANGE_INFO_S g_ipcCheckChangeNewService[] = { // データ変化を監視・通知したい種別のみ記載 Describe only the type  you want to monitor / notify of data changes
+    +static IPC_CHECK_CHANGE_INFO_S g_ipcCheckChangeNewService[] = { // Preparing only the type which we want to monitor data change
     +    DEFINE_OFFSET_SIZE(IPC_DATA_NEW_SERVICE_S, param1, IPC_KIND_NS_PARAM1),
     +    DEFINE_OFFSET_SIZE(IPC_DATA_NEW_SERVICE_S, param2, IPC_KIND_NS_PARAM2)
-    +}; // この例では、param3, param4のデータ変化については監視・通知しない。 In this example, data changes in param3 and param4 are not monitored or notified.
+    +}; // In this example not monitoring/notifying changed of param3, param4 data
     ```
-  * 新規用途向けに、IPC_CHECK_CHANGE_INFO_Sの構造体配列を追加します。For new usage, add a structure array of IPC_CHECK_CHANGE_INFO_S.
-  * ipc_protocol.hで定義した変化通知種別用列挙体の定義と、通信するデータ構造体メンバを対応付けるテーブルを記載します。Describes a table that associates the definition of the change notification type enumeration defined in ipc _ protocol.h with the data structure members to be communicated.
-  * このテーブルは、IPC ClientがIPC Serverからデータを受信する時に、前回受信時と変化しているデータ種別をコールバック通知する際に使用します。This table is used when the IPC Client receives data from the IPC Server and gives a callback notification of the data type changed from the previous receiving.
-  * 構造体配列内には、以下のようなマクロを複数個記載して対応を定義します。 Within the structure array, describe multiple macros as shown below to define the correspondence.
+  * For new usage, add a structure array of IPC_CHECK_CHANGE_INFO_S.
+  * Describeing a table that map the definition of the change notification type enumeration defined in ipc_protocol.h with the data structure members.
+  * This table is used for Callback notification of previous receiving data type change when the IPC Client received data from the IPC Server. 
+  * In structure array, describing multiple macros which defining matching as shown below.
     ```c
-    DEFINE_OFFSET_SIZE(<データ構造体名>, <構造体メンバ名>, 変化通知列挙体メンバ名),(<Data structure name>, <Structure member name>, Change notification enumeration member name),
+    DEFINE_OFFSET_SIZE(<Data structure name>, <Structure member name>, Change notification enumeration member name),
     ```
   * 上記サンプルコード、g_ipcCheckChangeNewService[]の場合は以下のようになります。In the case of the above sample code, g_ipcCheckChangeNewService[] will be as follows. 
     * param1が前回受信時と値が異なる場合、変化種別 IPC_KIND_NS_PARAM1 としてIPC Clientへコールバック通知する。If the value of param1 is different from the value at the time of the previous reception, the callback is notified to the IPC Client as the change type IPC_KIND_NS_PARAM1.
@@ -425,7 +423,7 @@ Only the types for which you want to monitor data changes are available
 * 用途と変化種別対応テーブルとの関係追記 adding relationship matching table between usage and change type 
   * サンプルコードの以下の部分のことになります。Sample code of this part will be as follow:
     ```patch
-     IPC_CHECK_CHANGE_INFO_TABLE_S g_ipcCheckChangeInfoTbl[] = {
+     IPC_CHECK_CHANGE_INFO_TABLE_S g_ipcCheckChangeInfoTbl[] = {i
          DEFINE_CHANGE_INFO_TABLE(g_ipcCheckChangeIcService),
     -    DEFINE_CHANGE_INFO_TABLE(g_ipcCheckChangeForTest)
     +    DEFINE_CHANGE_INFO_TABLE(g_ipcCheckChangeForTest),
