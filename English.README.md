@@ -235,7 +235,7 @@ index c0ad861..2bc1115 100644
  typedef enum {
      IPC_USAGE_TYPE_IC_SERVICE = 0,
      IPC_USAGE_TYPE_FOR_TEST,
-+    IPC_USAGE_TYPE_NEW_SERVICE, // 用途種別追加 Addition of usage type
++    IPC_USAGE_TYPE_NEW_SERVICE, // Adding usage type
      IPC_USAGE_TYPE_MAX
  } IPC_USAGE_TYPE_E;
 
@@ -244,12 +244,12 @@ index c0ad861..2bc1115 100644
  } IPC_DATA_FOR_TEST_S;
 
 +// for IPC_USAGE_TYPE_NEW_SERVICE
-+typedef enum { // データ変化を監視・通知したい種別のみ用意 Only the types for which you want to monitor/notify data changes are available
++typedef enum { // Preparing only the type which we want to monitor/notify data change
 +    IPC_KIND_NS_PARAM1 = 0,
 +    IPC_KIND_NS_PARAM2
 +} IPC_KIND_NEW_SERVICE_E;
 +
-+typedef struct { // この用途で送受信する全データ All data sent and received for this usage
++typedef struct { // This part for sending and receiving all data 
 +    int param1;
 +    int param2;
 +    int param3;
