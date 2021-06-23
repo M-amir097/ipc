@@ -217,15 +217,14 @@ Install the project...
   * However, Regarding application and test program used IPC, It is necessary to take measures according to the adding/changing of the ipc_protocol.h definition.
 * Ideally, code can be generated automatically using tools and else, but this time we don't consider that implementation.
 
-## 用途種別の追加・変更に関するサンプルコード（差分） Sample code for adding / changing the usage type (Sample code difference)
+## Sample code for adding/changing the usage type (Sample code difference)
 
-まずは2つのファイルに対してどのように追加・変更する際のサンプルコードを示します。
-First, the sample code for how to add / modify two files as follow.
+First, the sample code for adding/changing of two files as follow.
 
-### 例1：新規の用途種別を追加する場合 Example 1: When adding a new usage type
+### Example 1: When adding a new usage type
 
-仮にNEW_SERVICEという用途種別を追加する場合の差分例を示します。The following shows an example of the difference when adding usage type NEW_SERVICE.
-IPC内における、新規の用途種別追加による影響範囲となります。Influence range of the addition of a new usage types within the IPC.
+Show an difference example when adding temporarily usage type NEW_SERVICE.
+Influence area of adding new usage type within the IPC.
 
 ```patch
 diff --git a/include/ipc_protocol.h b/include/ipc_protocol.h
