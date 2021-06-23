@@ -278,14 +278,14 @@ index 976cc73..51264c6 100644
      {sizeof(IPC_DATA_IC_SERVICE_S), "ipcIcService"},
 -    {sizeof(IPC_DATA_FOR_TEST_S), "ipcForTest"}
 +    {sizeof(IPC_DATA_FOR_TEST_S), "ipcForTest"},
-+    {sizeof(IPC_DATA_NEW_SERVICE_S), "ipcNewService"} // add sending/receiving size information for new usage 
++    {sizeof(IPC_DATA_NEW_SERVICE_S), "ipcNewService"} // add sending/receiving size information for new Service 
  };
 
  IPC_CHECK_CHANGE_INFO_TABLE_S g_ipcCheckChangeInfoTbl[] = {
      DEFINE_CHANGE_INFO_TABLE(g_ipcCheckChangeIcService),
 -    DEFINE_CHANGE_INFO_TABLE(g_ipcCheckChangeForTest)
 +    DEFINE_CHANGE_INFO_TABLE(g_ipcCheckChangeForTest),
-+    DEFINE_CHANGE_INFO_TABLE(g_ipcCheckChangeNewService) // Registering data change monitoring table for new usage
++    DEFINE_CHANGE_INFO_TABLE(g_ipcCheckChangeNewService) // Registering data change monitoring table for new Service
  };
 
 ```
@@ -378,10 +378,10 @@ index 976cc73..40ac8df 100644
 
 ## Regarding adding src/ipc_usage_info_table.c
 * For one usage type, adding the following three information.
-  * Adding a type matching table for data change notification
+  * Adding a type mapping table for data change notification
   * Adding communication domain information (Communication size and file name)
-  * Adding relationship between usage and change type matching table 
-* Adding a type matching table for data change notification
+  * Adding relationship between usage and change type mapping table 
+* Adding a type mapping table for data change notification
   * Sample code of this part will be as follow:
     ```
     +//   for IPC_USAGE_TYPE_FOR_TEST
@@ -410,27 +410,27 @@ index 976cc73..40ac8df 100644
          {sizeof(IPC_DATA_IC_SERVICE_S), "ipcIcService"},
     -    {sizeof(IPC_DATA_FOR_TEST_S), "ipcForTest"}
     +    {sizeof(IPC_DATA_FOR_TEST_S), "ipcForTest"},
-    +    {sizeof(IPC_DATA_NEW_SERVICE_S), "ipcNewService"} //add sending/receiving size information for new usage 
+    +    {sizeof(IPC_DATA_NEW_SERVICE_S), "ipcNewService"} //add sending/receiving size information for new Service 
      };
     ```
-  * 構造体配列 g_ipcDomainInfoList[] に、新規用途向けのドメイン情報を追記します。In structure array g_ipcDomainInfoList[], adding the domain information for new usage.
-  * この追記により、新規追加した用途種別で用いる送受信データサイズと、Unix Domain Socket通信で用いるドメインファイル名が決まります。This addition determines the send / receive data size used for the newly added usage type and the domain file name used for Unix Domain Socket communication. 
-  * ipc_protocol.hのenum IPC_USAGE_TYPE_Eの定義順と一致させる必要があるので、必ず末尾に追加してください。Must match the definition order of the enum IPC _ USAGE _ TYPE _ E in ipc _ protocol.h, so be sure to  added at the end.
-  * 以下のように、通信するデータ構造体のサイズと、ドメインファイル名の情報を、g_ipcDomainInfoList[] の末尾に追記します。Add the size of the data structures to be communicated and the domain filename information to the end of g _ ipcDomainInfoList [], as follows:
+  * In structure array g_ipcDomainInfoList[], adding the domain information for new usage.
+  * This addition determines the sending/receiving data size used for the newly added usage type and Domain file name used for Unix Domain Socket communication. 
+  * Matching definition order of the enum IPC_USAGE_TYPE_E of ipc_protocol.h, so ensure additiopn at the end.
+  * Add communication data size structure and the domain filename information to the end of g_ipcDomainInfoList[], as follows:
     ```c
-    {sizeof(<通信するデータ構造体名>), "ドメインファイル名"sizeof (<data structure name to communicate>), "domain file name"},
+    {sizeof(<communication data structure name>), "domain file name"},
     ```
-* 用途と変化種別対応テーブルとの関係追記 adding relationship matching table between usage and change type 
-  * サンプルコードの以下の部分のことになります。Sample code of this part will be as follow:
+* Adding relationship between usage and change type mapping table  
+  * Sample code of this part will be as follow:
     ```patch
      IPC_CHECK_CHANGE_INFO_TABLE_S g_ipcCheckChangeInfoTbl[] = {i
          DEFINE_CHANGE_INFO_TABLE(g_ipcCheckChangeIcService),
     -    DEFINE_CHANGE_INFO_TABLE(g_ipcCheckChangeForTest)
     +    DEFINE_CHANGE_INFO_TABLE(g_ipcCheckChangeForTest),
-    +    DEFINE_CHANGE_INFO_TABLE(g_ipcCheckChangeNewService) // 新規用途用 データ変化監視テーブルを登録Registering a data change monitoring table for new usage
+    +    DEFINE_CHANGE_INFO_TABLE(g_ipcCheckChangeNewService) // Registering data change monitoring table for new service
      };
     ```
-  * 構造体配列 g_ipcCheckChangeInfoTbl[] に、新規用途向けの変化通知種別対応テーブルに関する情報を追記します。In the structure array g_ipcCheckChangeInfoTbl[], Adding information about the change notification type mapping table for new usage. 
+  * 構造体配列 g_ipcCheckChangeInfoTbl[] に、新規用途向けの変化通知種別対応テーブルに関する情報を追記します。In the structure array g_ipcCheckChangeInfoTbl[], adding information about the change notification type mapping table for new usage. 
   * ipc_protocol.hのenum IPC_USAGE_TYPE_Eの定義順と一致させる必要があるので、必ず末尾に追加してください。it is necessary to match the definition order of enum IPC_USAGE_TYPE_E in ipc_protocol.h,so be sure to add it at the end. 
   * 前述の「変化通知種別対応テーブル構造体」を、以下のようなマクロに記載し、g_ipcCheckChangeInfoTbl[]の末尾に追記します。Describe the above-mentioned "change notification type mapping table structure" in the following macro and add it to the end of g_ipcCheckChangeInfoTbl[].
     ```c
