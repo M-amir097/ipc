@@ -266,10 +266,10 @@ index 976cc73..51264c6 100644
  };
 
 +//   for IPC_USAGE_TYPE_FOR_TEST
-+static IPC_CHECK_CHANGE_INFO_S g_ipcCheckChangeNewService[] = { // データ変化を監視・通知したい種別のみ記載 Describe only the type  you want to monitor / notify of data changes
++static IPC_CHECK_CHANGE_INFO_S g_ipcCheckChangeNewService[] = { // Describing only the type which we want to monitor/notify data change
 +    DEFINE_OFFSET_SIZE(IPC_DATA_NEW_SERVICE_S, param1, IPC_KIND_NS_PARAM1),
 +    DEFINE_OFFSET_SIZE(IPC_DATA_NEW_SERVICE_S, param2, IPC_KIND_NS_PARAM2)
-+}; // この例では、param3, param4のデータ変化については監視・通知しない。This example donot want to monitor/notify changed of param3, param4 data
++}; //In this example not monitor/notify changed of param3, param4 data
 +
  // == usage info table ==
  //   index of [] is IPC_USAGE_TYPE_E
@@ -278,21 +278,21 @@ index 976cc73..51264c6 100644
      {sizeof(IPC_DATA_IC_SERVICE_S), "ipcIcService"},
 -    {sizeof(IPC_DATA_FOR_TEST_S), "ipcForTest"}
 +    {sizeof(IPC_DATA_FOR_TEST_S), "ipcForTest"},
-+    {sizeof(IPC_DATA_NEW_SERVICE_S), "ipcNewService"} // 新規用途用の送受信サイズ情報追加 add information of new usage sending/receiving size   
++    {sizeof(IPC_DATA_NEW_SERVICE_S), "ipcNewService"} // add sending/receiving size information for new usage 
  };
 
  IPC_CHECK_CHANGE_INFO_TABLE_S g_ipcCheckChangeInfoTbl[] = {
      DEFINE_CHANGE_INFO_TABLE(g_ipcCheckChangeIcService),
 -    DEFINE_CHANGE_INFO_TABLE(g_ipcCheckChangeForTest)
 +    DEFINE_CHANGE_INFO_TABLE(g_ipcCheckChangeForTest),
-+    DEFINE_CHANGE_INFO_TABLE(g_ipcCheckChangeNewService) // 新規用途用 データ変化監視テーブルを登録 Register monitor table of new usage changed data
++    DEFINE_CHANGE_INFO_TABLE(g_ipcCheckChangeNewService) // Registering data change monitoring table for new usage
  };
 
 ```
 
-### 例2：既存の用途種別のデータの一部を削除する場合 Example 2: When deleting part of the existing usage type data
+### Example 2: Deleting part of the existing usage type data
 
-既存の用途IC-Serviceの送受信データから、メンバ変数brakeを削除する場合の差分例を示します。An example of the difference when the member variable brake is deleted from the transmission / reception data of the existing usage IC-Service is shown below.
+The following example show difference when deleting the member variable brake from usage sending/receiving data of existing IC-Service.
 IPC内における、メンバ変数を削除した場合の影響範囲となります。。Influence range of the deleting member variable within the IPC.
 
 ```patch
@@ -330,23 +330,22 @@ index 976cc73..40ac8df 100644
      DEFINE_OFFSET_SIZE(IPC_DATA_IC_SERVICE_S, door, IPC_KIND_ICS_DOOR),
 ```
 
-## 用途種別の新規追加に関する共通事項 Common matters regarding the addition of a new use type
+## Common items regarding new addition of usage type
 
-* いくつか列挙体・構造体の新規追加、および既存の列挙体・構造体内への追記を伴いますが、いずれも名称については特に制約はありません。Some new enumerations / structures will be added, and some enumerations / structures will be added to existing enumerations / structures, but there are no particular restrictions on the names of any of them.
+* Adding some new enumerations/structures, with addition to existing enumeration/structure. There are no restrictions on the names.
 
-## include/ipc_protocol.h へ追記する情報 Information added to include/ipc_protocol.h
-* 1つの用途種別に対し、以下の3つの情報を追記します。
-Add the following three information for one usage type.
-  * 用途種別名の追記 Addition of usage type name
-  * 新規用途向けの変化通知種別用列挙体の定義 Definition of enumeration for change notification type for new usage
-  * 新規用途向けの送受信データ構造体の定義 Definition of send/receive data structure for new usage
-* 用途種別名の追記 Addition of usage type name
-  * サンプルコードの以下の部分のことになります。Sample code of this part will be as follow:
+## Adding Information to include/ipc_protocol.h
+* For one usage type, adding the following three information.
+  * Adding usage type name
+  * For new usage, Defining enumeration for change notification type
+  * For new usage, Defining sending/receiving data structure 
+* Adding usage type name
+  * Sample code of this part will be as follow:
     ```patch
      typedef enum {
          IPC_USAGE_TYPE_IC_SERVICE = 0,
          IPC_USAGE_TYPE_FOR_TEST,
-    +    IPC_USAGE_TYPE_NEW_SERVICE, // 用途種別追加 Adding of usage type
+    +    IPC_USAGE_TYPE_NEW_SERVICE, // Adding usage type
          IPC_USAGE_TYPE_MAX
      } IPC_USAGE_TYPE_E;
     ```
