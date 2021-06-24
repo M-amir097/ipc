@@ -208,18 +208,18 @@ Install the project...
 
 # Adding/Changing IPC usage type method
  
-* First, implementetion only for IC-Service, but configured to add data for other usage easily.
+* First, the implementation only for IC-Service, but configured to add data for other services easily.
 * Information for each usage type is managed in the following files:
   * include/ipc_protocol.h (External Public header)
   * src/ipc_usage_info_table.c (IPC Internal Source)
-* Adding information for new usage or changing information for existed useage only by two files above.
-  * No changes are required for other than .c or .h files in ipc.
-  * However, Regarding application and test program used IPC, It is necessary to take measures according to the adding/changing of the ipc_protocol.h definition.
-* Ideally, code can be generated automatically using tools and else, but this time we don't consider that implementation.
+* Adding information for new service or changing information for existed service only by two files above.
+  * No changes are required other than .c or .h files in ipc.
+  * However, Regarding the application and test program used IPC, It is necessary to take measures according to the adding/changing of the ipc_protocol.h definition.
+* Ideally, code can be generated automatically using tools and else. We do not consider that implementation this time.
 
 ## Sample code for adding/changing the usage type (Sample code difference)
 
-First, the sample code for adding/changing of two files as follow.
+First, the sample code for adding/changing two files as follow.
 
 ### Example 1: When adding a new usage type
 
@@ -269,7 +269,7 @@ index 976cc73..51264c6 100644
 +static IPC_CHECK_CHANGE_INFO_S g_ipcCheckChangeNewService[] = { // Describing only the type which we want to monitor/notify data change
 +    DEFINE_OFFSET_SIZE(IPC_DATA_NEW_SERVICE_S, param1, IPC_KIND_NS_PARAM1),
 +    DEFINE_OFFSET_SIZE(IPC_DATA_NEW_SERVICE_S, param2, IPC_KIND_NS_PARAM2)
-+}; //In this example not monitor/notify changed of param3, param4 data
++}; //This example not monitoring/notifying changes of param3, param4 data
 +
  // == usage info table ==
  //   index of [] is IPC_USAGE_TYPE_E
@@ -335,10 +335,10 @@ index 976cc73..40ac8df 100644
 * Adding some new enumerations/structures, with addition to existing enumeration/structure. There are no restrictions on the names.
 
 ## Adding Information to include/ipc_protocol.h
-* For one usage type, adding the following three information.
-  * Adding usage type name
-  * For new usage, Defining enumeration for change notification type
-  * For new usage, Defining sending/receiving data structure 
+* For one usage type, adding the following three items of information.
+  * Add usage type name.
+  * For new usage, Define enumeration for the change notification type.
+  * For new usage, Define sending/receiving data structure.
 * Adding usage type name
   * Sample code of this part will be as follow:
     ```patch
@@ -350,9 +350,9 @@ index 976cc73..40ac8df 100644
      } IPC_USAGE_TYPE_E;
     ```
   * Adding a member for the usage type in enum IPC_USAGE_TYPE_E.
-  * Make sure to add it just before IPC_USAGE_TYPE_MAX (Avoiding effect existing definitions)
+  * Make sure to add it just before IPC_USAGE_TYPE_MAX (Avoiding effect on existing definitions)
   * The value defined here is used to specify the argument usageType such as ipcServerStart() defined in ipc.h.
-* For new usage, Defining enumeration for change notification type
+* For new usage, Define enumeration for the change notification type.
   * Sample code of this part will be as follow:
     ```patch
     +typedef enum { // Preparing only the type which we want to monitor data change
@@ -361,9 +361,9 @@ index 976cc73..40ac8df 100644
     +} IPC_KIND_NEW_SERVICE_E;
     ```
   * Adding an enumeration for the data change notification type. Related to the sending/receiving data structures will describe next.
-  * This value is used to specify the third argument kind of callback function registered by ipcRegisterCallback ().
+  * This value is used to specify the third argument kind of callback function registered by ipcRegisterCallback().
   * There are no restrictions for naming enumeration and member.
-* For new usage, Defining sending/receiving data structure 
+* For new usage, Define sending/receiving data structure. 
   * Sample code of this part will be as follow:
     ```patch
     +typedef struct { // This part for sending and receiving all data
@@ -377,32 +377,32 @@ index 976cc73..40ac8df 100644
   * The IPC Server will send all the data in the defined structure to the IPC Client.
 
 ## Regarding adding src/ipc_usage_info_table.c
-* For one usage type, adding the following three information.
-  * Adding a type mapping table for data change notification
-  * Adding communication domain information (Communication size and file name)
-  * Adding relationship between usage and change type mapping table 
-* Adding a type mapping table for data change notification
+* For one usage type, adding the following three items of information.
+  * Add a type mapping table for data change notification.
+  * Add communication domain information (Communication size and file name).
+  * Add mapping table for a relationship between usage and change type.
+* Add a type mapping table for data change notification.
   * Sample code of this part will be as follow:
     ```
     +//   for IPC_USAGE_TYPE_FOR_TEST
     +static IPC_CHECK_CHANGE_INFO_S g_ipcCheckChangeNewService[] = { // Preparing only the type which we want to monitor data change
     +    DEFINE_OFFSET_SIZE(IPC_DATA_NEW_SERVICE_S, param1, IPC_KIND_NS_PARAM1),
     +    DEFINE_OFFSET_SIZE(IPC_DATA_NEW_SERVICE_S, param2, IPC_KIND_NS_PARAM2)
-    +}; // In this example not monitoring/notifying changed of param3, param4 data
+    +}; // This example not monitoring/notifying changes of param3, param4 data
     ```
   * For new usage, add a structure array of IPC_CHECK_CHANGE_INFO_S.
-  * Describeing a table that map the definition of the change notification type enumeration defined in ipc_protocol.h with the data structure members.
-  * This table is used for Callback notification of previous receiving data type change when the IPC Client received data from the IPC Server. 
+  * Describing a table that maps the definition of change notification type enumeration, defined in ipc_protocol.h with the data structure members.
+  * This table is used for Callback notification of the last receiving data type change when the IPC Client received data from the IPC Server. 
   * In structure array, describing multiple macros which defining matching as shown below.
     ```c
     DEFINE_OFFSET_SIZE(<Data structure name>, <Structure member name>, Change notification enumeration member name),
     ```
   * In the case of the above sample code, g_ipcCheckChangeNewService[] will be as follows. 
-    * If the value of param1 is different from the value of the previous receving, the callback change type IPC_KIND_NS_PARAM1 is notified to the IPC Client.
-    * If the value of param2 is different from the value of the previous receving, the callback change type IPC_KIND_NS_PARAM2 is notified to the IPC Client.
-    * For param3 and param4 which are not described, callback do not notify even if the value of the previous receving is different.
+    * If the value of param1 is different from the value of the previous receiving, the callback change type IPC_KIND_NS_PARAM1 is notified to the IPC Client.
+    * If the value of param2 is different from the value of the previous receiving, the callback change type IPC_KIND_NS_PARAM2 is notified to the IPC Client.
+    * For param3 and param4 are not described, the callback does not notify even if the value of the previous receiving is different.
 
-* Adding communication domain information (Communication size and file name)
+* Add communication domain information (Communication size and file name).
   * Sample code of this part will be as follow:
     ```patch
      IPC_DOMAIN_INFO_S g_ipcDomainInfoList[] =
@@ -415,12 +415,12 @@ index 976cc73..40ac8df 100644
     ```
   * In structure array g_ipcDomainInfoList[], adding the domain information for new usage.
   * This addition determines the sending/receiving data size used for the newly added usage type and Domain file name used for Unix Domain Socket communication. 
-  * Neccessary to match definition order of the enum IPC_USAGE_TYPE_E of ipc_protocol.h, so ensure adding it at the end.
+  * It is necessary to match the definition order of the enum IPC_USAGE_TYPE_E of ipc_protocol.h, so ensure adding it at the end.
   * Add communication data size structure and the domain filename information to the end of g_ipcDomainInfoList[], as follows:
     ```c
     {sizeof(<communication data structure name>), "domain file name"},
     ```
-* Adding relationship between usage and change type mapping table  
+* Add mapping table for a relationship between usage and change type.  
   * Sample code of this part will be as follow:
     ```patch
      IPC_CHECK_CHANGE_INFO_TABLE_S g_ipcCheckChangeInfoTbl[] = {i
@@ -430,8 +430,8 @@ index 976cc73..40ac8df 100644
     +    DEFINE_CHANGE_INFO_TABLE(g_ipcCheckChangeNewService) // Registering data change monitoring table for new service
      };
     ```
-  * In the structure array g_ipcCheckChangeInfoTbl[], adding information about the change notification type mapping table for new usage. 
-  * Neccessary to match definition order of the enum IPC_USAGE_TYPE_E of ipc_protocol.h, so ensure adding it at the end.
+  * In structure array g_ipcCheckChangeInfoTbl[], adding information about the mapping table for a relationship between new usage and change notification type.
+  * It is necessary to match the definition order of the enum IPC_USAGE_TYPE_E of ipc_protocol.h, so ensure adding it at the end.
   * Describing the above-mentioned "change notification type mapping table structure" in the following macro, then add it to the end of g_ipcCheckChangeInfoTbl[].
     ```c
     DEFINE_CHANGE_INFO_TABLE(<name of change notification type mapping table structure>), 
@@ -445,8 +445,8 @@ index 976cc73..40ac8df 100644
   * Refer to [Adding/Changing IPC usage type method](#adding-changing-ipc-usage-type-method), add it to include/ipc_protocol.h and src/ipc_usage_info_table.c.
 
 ## Supplement
-* In src/ipc_usage_info_table.c, the information is described in the DEFINE_OFFSET_SIZE() macro, which using offsetof() and sizeof() to get the offset and size of member variables from the head of related structure.
-  * In order to make it easier to add usage types, the IPC process does not directly specifying variable names in data structures.
+* In src/ipc_usage_info_table.c, the information is described in the DEFINE_OFFSET_SIZE() macro, which using offsetof() and sizeof() to get the offset and size of member variables from the head of the related structure.
+  * In order to make it easier to add usage types, the IPC process does not directly specify variable names in data structures.
   * For each usage, by preparing an offset table of the data structure, it becomes possible to know what variables are in which byte of the sending data.
-    * By this structure, it is possible to check data change without directly specifying the member variable name inside the IPC process.
-  * Adding the usage type according to [Adding/Changing IPC usage type method](#adding-changing-ipc-usage-type-method), the IPC inter processing can process for new usage.
+    * This structure makes it possible to check data change without directly specifying the member variable name inside the IPC process.
+  * Adding the usage type according to [Adding/Changing IPC usage type method](#adding-changing-ipc-usage-type-method), the IPC inter processing can process new usage.
