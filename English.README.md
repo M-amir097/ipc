@@ -391,7 +391,7 @@ index 976cc73..40ac8df 100644
     +}; // This example not monitoring/notifying changes of param3, param4 data
     ```
   * For new usage, add a structure array of IPC_CHECK_CHANGE_INFO_S.
-  * Describing a table that maps the definition of change notification type enumeration, defined in ipc_protocol.h with the data structure members.
+  * Describing a table that maps the definition of change notification type enumeration (defined in ipc_protocol.h) with the data structure members.
   * This table is used for Callback notification of the last receiving data type change when the IPC Client received data from the IPC Server. 
   * In structure array, describing multiple macros which defining matching as shown below.
     ```c
