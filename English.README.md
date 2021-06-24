@@ -206,7 +206,7 @@ Install the project...
       $
       ```
 
-# Adding/changeing IPC usage type method
+# Adding/changeingIPCusagetypemethod
  
 * First, implementetion only for IC-Service, but configured to add data for other usage easily.
 * Information for each usage type is managed in the following files:
@@ -449,4 +449,4 @@ index 976cc73..40ac8df 100644
   * In order to make it easier to add usage types, the IPC process does not directly specifying variable names in data structures.
   * For each usage, by preparing an offset table of the data structure, it becomes possible to know what variables are in which byte of the sending data.
     * By this structure, it is possible to check data change without directly specifying the member variable name inside the IPC process.
-  * [IPC用途種別の追加・変更方法](#IPC用途種別の追加・変更方法) に従って用途種別を追加することで、IPC内部処理は新たな用途に対する処理ができるようになります。By adding the usage type according to [Adding/changeing IPC usage type method] (#Adding/changeing IPC usage type method), the IPC inter processing can process for new usage.
+  * Adding the usage type according to [Adding/changeingIPCusagetypemethod] (#Adding/changeingIPCusagetypemethod), the IPC inter processing can process for new usage.
