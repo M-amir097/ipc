@@ -415,7 +415,7 @@ index 976cc73..40ac8df 100644
     ```
   * In structure array g_ipcDomainInfoList[], adding the domain information for new usage.
   * This addition determines the sending/receiving data size used for the newly added usage type and Domain file name used for Unix Domain Socket communication. 
-  * Matching definition order of the enum IPC_USAGE_TYPE_E of ipc_protocol.h, so ensure additiopn at the end.
+  * Neccessary to match definition order of the enum IPC_USAGE_TYPE_E of ipc_protocol.h, so ensure adding it at the end.
   * Add communication data size structure and the domain filename information to the end of g_ipcDomainInfoList[], as follows:
     ```c
     {sizeof(<communication data structure name>), "domain file name"},
@@ -430,23 +430,23 @@ index 976cc73..40ac8df 100644
     +    DEFINE_CHANGE_INFO_TABLE(g_ipcCheckChangeNewService) // Registering data change monitoring table for new service
      };
     ```
-  * 構造体配列 g_ipcCheckChangeInfoTbl[] に、新規用途向けの変化通知種別対応テーブルに関する情報を追記します。In the structure array g_ipcCheckChangeInfoTbl[], adding information about the change notification type mapping table for new usage. 
-  * ipc_protocol.hのenum IPC_USAGE_TYPE_Eの定義順と一致させる必要があるので、必ず末尾に追加してください。it is necessary to match the definition order of enum IPC_USAGE_TYPE_E in ipc_protocol.h,so be sure to add it at the end. 
-  * 前述の「変化通知種別対応テーブル構造体」を、以下のようなマクロに記載し、g_ipcCheckChangeInfoTbl[]の末尾に追記します。Describe the above-mentioned "change notification type mapping table structure" in the following macro and add it to the end of g_ipcCheckChangeInfoTbl[].
+  * In the structure array g_ipcCheckChangeInfoTbl[], adding information about the change notification type mapping table for new usage. 
+  * Neccessary to match definition order of the enum IPC_USAGE_TYPE_E of ipc_protocol.h, so ensure adding it at the end.
+  * Describing the above-mentioned "change notification type mapping table structure" in the following macro, then add it to the end of g_ipcCheckChangeInfoTbl[].
     ```c
-    DEFINE_CHANGE_INFO_TABLE(<変化通知種別対応テーブル構造体名>),DEFINE_CHANGE_INFO_TABLE (<name of change notification type mapping table structure>), 
+    DEFINE_CHANGE_INFO_TABLE(<name of change notification type mapping table structure>), 
     ```
 
-## 既存用途向けの送信データを一部変更する場合 When partially changing the send data for existing usage
-* ipc_protocol.h内の既存の送信データ構造体内のメンバ変数の削除、もしくは名称変更する場合 When deleting or renaming a member variable in an existing send data structure in ipc_protocol.h
-  * ipc部分、およびipcをその用途で用いるアプリをそれぞれビルドしてみて、コンパイルエラーとなった部分を修正します。Try building the ipc part and the application that uses ipc for that purpose, and fix the part that caused the compilation error. 
+## Changing of sending data for existing usage
+* When deleting or renaming a member variable in an existing sending data structure in ipc_protocol.h
+  * Trying to build each ipc part and application that uses ipc for the service, then fix the part that causing the Compile error. 
 
-* ipc_protocol.h内の既存の送信データ構想体へメンバ変数を追加する場合 When adding a member variable to an existing send data concept in ipc_protocol.h
-  * [IPC用途種別の追加・変更方法](#IPC用途種別の追加・変更方法) を参考に、include/ipc_protocol.hとsrc/ipc_usage_info_table.cへの追記を行います。Refer to [How to add/change IPC usage types] (# How to add/change IPC usage types), add  to include/ipc_protocol.h and src/ipc_usage_info_table.c.
+* When adding a member variable in an existing sending data structure in ipc_protocol.h
+  * Refer to [Adding/changeing IPC usage type method] (#Adding/changeing IPC usage type method), add it to include/ipc_protocol.h and src/ipc_usage_info_table.c.
 
-## 補足 supplement
-* src/ipc_usage_info_table.cにて、DEFINE_OFFSET_SIZE()マクロにて情報を記載しているが、これはoffsetof()とsizeof()を使うことで、メンバ変数に関する構造体先頭からオフセットとサイズを取得しています。In src / ipc_usage_info_table.c, the information is described by the DEFINE_OFFSET_SIZE () macro, which uses offsetof () and sizeof () to get the offset and size of member variables from the beginning of the structure.
-  * 用途種別の追加を容易に行えるようにするため、IPC処理内部ではデータ構造体内の変数名を直接指定しないような実装を行っています。In order to make it easier to add usage types, the IPC process does not directly specify variable names in data structures.
-  * 各用途に対して、データ構造体のオフセットテーブルを用意することで、送信されたデータの何バイト目に何の変数があるかがわかるようになります。For each usage, by preparing an offset table of the data structure, it becomes possible to know what variables are at which byte of the send data.
-    * この仕組みにより、IPC処理内部でメンバ変数名を直接指定しなくとも、データ変化の確認が可能となります。By this mechanism, it is possible to check data changes without directly specifying the member variable name inside the IPC process.
-  * [IPC用途種別の追加・変更方法](#IPC用途種別の追加・変更方法) に従って用途種別を追加することで、IPC内部処理は新たな用途に対する処理ができるようになります。By adding the usage type according to [How to add / change the IPC usage type] (#How to add / change the IPC usage type), the IPC internal processing can be process the new usage.
+## Supplement
+* In src/ipc_usage_info_table.c, the information is described in the DEFINE_OFFSET_SIZE() macro, which using offsetof() and sizeof() to get the offset and size of member variables from the head of related structure.
+  * In order to make it easier to add usage types, the IPC process does not directly specifying variable names in data structures.
+  * For each usage, by preparing an offset table of the data structure, it becomes possible to know what variables are in which byte of the sending data.
+    * By this structure, it is possible to check data change without directly specifying the member variable name inside the IPC process.
+  * [IPC用途種別の追加・変更方法](#IPC用途種別の追加・変更方法) に従って用途種別を追加することで、IPC内部処理は新たな用途に対する処理ができるようになります。By adding the usage type according to [Adding/changeing IPC usage type method] (#Adding/changeing IPC usage type method), the IPC inter processing can process for new usage.
