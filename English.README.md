@@ -2,7 +2,7 @@
 
 ## Overview
 
-* A general implementation of the Server and Client Inter-processing communication (IPC) part.
+* It is a general-purpose implementation of Inter-processing communication between the Server and Client (IPC section).
 * It consists mainly of the following:
   * IPC library implementation source: src, include
   * IPC unit test program: ipc_unit_test
@@ -75,7 +75,7 @@ Install the project...
 
 # How to use
 
-* This library contains functions for Server and Client, Each has different usage.
+* This library contains functions for Server and Client; Each has different usage.
 
 ## Common of Server/Client 
 
@@ -83,7 +83,7 @@ Install the project...
   * `libipc.so`
 * User includes the library as following.
   * #include <ipc.h>
-    * ipc_protocol.h description is not required, it described later within ipc.h (include <ipc.h>).
+    * ipc_protocol.h description is not required; it described later within ipc.h (include <ipc.h>).
 * The header files are used as follows.
   * ipc.h
     * Declare a list of available API functions.
@@ -116,14 +116,14 @@ Install the project...
     * Starting the IPC Server for the specified _usageType_.
   * ipcSendMessage(IPC_USAGE_TYPE_E usageType, const void* pData, signed int size);
     * Sending data to the IPC Client for the specified _usageType_. 
-    * The address and size of the sending data Specified by _pData_ and _size_ arguments. 
+    * Specifying address and size of the sending data by pData and size arguments. 
     * Sending data is stored in the Data Pool prepared on the IPC Client side.
   * ipcServerStop(IPC_USAGE_TYPE_E usageType);
     * Terminate the IPC Server for the specified usageType.
 
 ## Client API
 
-* The client applied libipc.so can use the following APIs:
+* The Client applied libipc.so can use the following APIs:
   * ipcClientStart(IPC_USAGE_TYPE_E usageType);
     * Starting the IPC Client for the specified usageType.
     * Connecting with IPC Server for the same usageType.
@@ -434,7 +434,7 @@ index 976cc73..40ac8df 100644
   * It is necessary to match the definition order of the enum IPC_USAGE_TYPE_E of ipc_protocol.h, so ensure adding it at the end.
   * Describing the above-mentioned "change notification type mapping table structure" in the following macro, then add it to the end of g_ipcCheckChangeInfoTbl[].
     ```c
-    DEFINE_CHANGE_INFO_TABLE(<name of change notification type mapping table structure>), 
+    DEFINE_CHANGE_INFO_TABLE(<change notification type mapping table structure name>), 
     ```
 
 ## Changing of sending data for existing usage
