@@ -139,8 +139,8 @@ Install the project...
 # Unit test executing method
 
 * Limitations
-  * Currently 2020/12/25, this test program connect Server and Client for IC-Service.  
-  * The unix domain socket communication files are generated under /tmp/ with the file name ipcIcService.
+  * Currently 2020/12/25, this test program connects Server and Client for IC-Service.  
+  * The Unix domain socket communication files are generated under /tmp/ with the file name ipcIcService.
 
 * Since Inter processing communication takes place between ipc_unit_test_server and ipc_unit_test_client, so start each one in a separate terminal.
   Testing example as bellow (Manually operated): 
@@ -156,17 +156,17 @@ Install the project...
       $ ./ipc_unit_test_client
       command (h=help, q=quit):
       ```  
-      At this point, the Server and Client connection for IC-Service completed.
+      At this point, the Server and Client connection for IC-Service is completed.
       (Executing ipcServerStart () and ipcClientStart ())
 
-  2. **Editing Server sending data, then send it**
+  2. **Editing and Sending Server data**
       ```bash
       (Terminal 1)
       command (h=help, q=quit):w ←★input w 
       write command (h=help q=goto main menu):2 1 ←★input 2 1
       write command (h=help q=goto main menu):70 50 ←★input 70 50
       write command (h=help q=goto main menu):l ←★input 1
-      ★Sending data list is displayed, the influnce of input contents as below. 
+      ★Sending data list is displayed, the result of input contents as below. 
         2: brake(4) = 1 ←★write command 2 1 result
         70: oTempUnitVal(4) = 50 ←★write command 70 50 result
       write command (h=help q=goto main menu):q ←★input q
@@ -174,14 +174,14 @@ Install the project...
       ipcSendMessage return:0
       command (h=help, q=quit):
       ```
-      In Client side, The callback function should be responding.
+      On the Client side, The callback function should be responding.
       ```bash
       (Terminal 2)
       command (h=help, q=quit):Enter changeNotifyCb ←★callback
       kind = 2, size = 4, data=1 ←★Notification of brake value changed to 1 
       Leave changeNotifyCb
       ```
-      ★oTempUnitValの変化についてはIC-Serviceとしては監視対象でないのでコールバック無し。No callback for TempUnitVal change as an IC-Service, because it is not monitored .
+      ★oFor TempUnitVal change as an IC-Service, there is no callback since it is not monitored.
 
   3. **Check Client side receiving.**  
       ```bash
