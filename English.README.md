@@ -442,11 +442,11 @@ index 976cc73..40ac8df 100644
   * Trying to build each ipc part and application that uses ipc for the service, then fix the part that causing the Compile error. 
 
 * When adding a member variable in an existing sending data structure in ipc_protocol.h
-  * Refer to [Adding/Changing IPC usage type method](#-adding/changing-ipc-usage-type-method), add it to include/ipc_protocol.h and src/ipc_usage_info_table.c.
+  * Refer to [Adding/Changing IPC usage type method](#adding-changing-ipc-usage-type-method), add it to include/ipc_protocol.h and src/ipc_usage_info_table.c.
 
 ## Supplement
 * In src/ipc_usage_info_table.c, the information is described in the DEFINE_OFFSET_SIZE() macro, which using offsetof() and sizeof() to get the offset and size of member variables from the head of related structure.
   * In order to make it easier to add usage types, the IPC process does not directly specifying variable names in data structures.
   * For each usage, by preparing an offset table of the data structure, it becomes possible to know what variables are in which byte of the sending data.
     * By this structure, it is possible to check data change without directly specifying the member variable name inside the IPC process.
-  * Adding the usage type according to [Adding/Changing IPC usage type method](#-adding/changing-ipc-usage-type-method), the IPC inter processing can process for new usage.
+  * Adding the usage type according to [Adding/Changing IPC usage type method](#adding-changing-ipc-usage-type-method), the IPC inter processing can process for new usage.
