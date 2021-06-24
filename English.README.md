@@ -223,8 +223,8 @@ First, the sample code for adding/changing two files as follow.
 
 ### Example 1: When adding a new usage type
 
-Show an difference example when adding temporarily usage type NEW_SERVICE.
-Influence area of adding new usage type within the IPC.
+The following example shows differences when adding the temporary usage type NEW_SERVICE.
+(Parameters influenced when adding new usage type within the IPC)
 
 ```patch
 diff --git a/include/ipc_protocol.h b/include/ipc_protocol.h
@@ -292,8 +292,8 @@ index 976cc73..51264c6 100644
 
 ### Example 2: Deleting part of the existing usage type data
 
-The following example show difference when deleting the member variable brake from usage sending/receiving data of existing IC-Service.
-IPC内における、メンバ変数を削除した場合の影響範囲となります。。Influence range of the deleting member variable within the IPC.
+The following example shows differences when deleting the member variable brake from usage sending/receiving data of existing IC-Service.
+(Parameters influenced when a member variable is deleted within the IPC) 
 
 ```patch
 diff --git a/include/ipc_protocol.h b/include/ipc_protocol.h
