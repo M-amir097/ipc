@@ -21,7 +21,7 @@
     $ ./buildtest.sh
     ```
 
-For the installation described next, which will be installed on the host PC (/usr/local/). Change the options passed to _cmake_ to change the installation destination.
+The installation described next will be installed on the host PC (/usr/local/). To change the installation destination, change the option passed to cmake.
 
 ```
 Example 
@@ -51,7 +51,7 @@ Install the project...
 
 # Building Product 
 
-* At last Building will generate the following:
+* At last, Building will generate the following:
   * \<installdir\>/include/
 (External Public header files)
     ```bash
@@ -73,7 +73,7 @@ Install the project...
     ```
 <br>
 
-# Using mehod
+# How to use
 
 * This library contains functions for Server and Client, Each has different usage.
 
@@ -81,17 +81,17 @@ Install the project...
 
 * The user needs to link with the following libraries.
   * `libipc.so`
-* User include the library as follow
+* User includes the library as following.
   * #include <ipc.h>
-    * 後述のipc_protocol.hはipc.h内からincludeされるため、記載不要です。ipc_protocol.h described later from ipc.h (include <ipc.h>), so description is not required.
-* The header files used as follows.
+    * ipc_protocol.h description is not required, it described later within ipc.h (include <ipc.h>).
+* The header files are used as follows.
   * ipc.h
     * Declare a list of available API functions.
   * ipc_protocol.h
     * Define IPC usage types and data structures for each usage.
-* In libraries, Server and Client communicate using Unix Domain SocketF
+* In libraries, Server and Client communicate using Unix Domain Socket.
   * Generate different communication files for each usage type. 
-  * By default, a communication file is generated in the execution hierarchy of Server.
+  * By default, a communication file is generated in the execution hierarchy of the Server.
   * For changing the location where generating the communication files, set the environment variable "IPC_DOMAIN_PATH" 
   ```
   Example)
@@ -101,10 +101,10 @@ Install the project...
 
 ## For IC-Service
 
-* When using this library for IC-Service, use the following values and structures (see ipc_protocol.h). 
+* Using this library for IC-Service, use the following values and structures (see ipc_protocol.h). 
   * UsageType：IPC_USAGE_TYPE_IC_SERVICE
   * Sending data structure：IPC_DATA_IC_SERVICE_S
-  * 変化種別コールバック通知用enum Change type callback notification (enum)：IPC_KIND_IC_SERVICE_E
+  * Changing type callback notification (enum)：IPC_KIND_IC_SERVICE_E
   * Unix Domain Socket communication File name：IpcIcService
 * For IC-Service, the Cluster API library (libcluster_api.so) is the IPC Client. 
   * The API for Client is called from libcluster_api.so (described later)
@@ -113,9 +113,9 @@ Install the project...
 
 * Server applied libipc.so can use the following APIs:
   * ipcServerStart(IPC_USAGE_TYPE_E usageType);
-    * Starting the IPC Server for the specified usageType.
+    * Starting the IPC Server for the specified _usageType_.
   * ipcSendMessage(IPC_USAGE_TYPE_E usageType, const void* pData, signed int size);
-    * Sending data to the IPC Client for the specified usageType. 
+    * Sending data to the IPC Client for the specified _usageType_. 
     * The address and size of the sending data Specified by _pData_ and _size_ arguments. 
     * Sending data is stored in the Data Pool prepared on the IPC Client side.
   * ipcServerStop(IPC_USAGE_TYPE_E usageType);
@@ -123,16 +123,16 @@ Install the project...
 
 ## Client API
 
-* Client applied libipc.so can use the following APIs:
+* The client applied libipc.so can use the following APIs:
   * ipcClientStart(IPC_USAGE_TYPE_E usageType);
     * Starting the IPC Client for the specified usageType.
-    * Connecting with IPC Server for same usageType.
+    * Connecting with IPC Server for the same usageType.
   * ipcReadDataPool(IPC_USAGE_TYPE_E usageType, void* pData, signed int* pSize);
     * Reading all data in the Data Pool for the specified usageType.
-    * The address where storing the read data is specified in pData, and the size of storeing data is specified in pSize.
-    * The contents of the Data Pool output to pData, and the real read size output to pSize.
+    * The address where storing the read data is specified in pData. Moreover, the size of storing data is specified in pSize.
+    * The contents of the Data Pool output to pData, and the actual read size output to pSize.
   * ipcRegisterCallback(IPC_USAGE_TYPE_E usageType, IPC_CHANGE_NOTIFY_CB changeNotifyCb);
-    * When receiving data from the IPC Server, register the callback function for the specified usageType which receiving notification of What data changed to what.
+    * When receiving data from the IPC Server, register the callback function for the specified usageType, which receiving notification of which data changed to what.
   * ipcClientStop(IPC_USAGE_TYPE_E usageType);
     * Terminate the IPC Client for the specified usageType.
 
